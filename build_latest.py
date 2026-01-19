@@ -42,11 +42,13 @@ def fred_observations(series_id: str, days_back: int = 120) -> pd.Series:
 
     }
     r = requests.get(url, params=params, timeout=30)
-    try:
+ try:
     r.raise_for_status()
 except requests.exceptions.HTTPError as e:
     print(f"FRED fetch failed for {series_id}: {e}")
     return pd.Series(dtype=float)
+
+
 
     data = r.json()
 
