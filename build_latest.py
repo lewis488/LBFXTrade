@@ -2,44 +2,38 @@ import os
 import json
 import requests
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 # =========================
-# ENV / CONFIG
+# ENV
 # =========================
 
 FRED_API_KEY = os.getenv("FRED_API_KEY")
+TE_API_KEY = os.getenv("TE_API_KEY")
 
 if not FRED_API_KEY:
-    raise RuntimeError("FRED_API_KEY not found in environment variables")
+    raise RuntimeError("FRED_API_KEY missing")
 
-OUTPUT_PATH = Path("public/latest.json")
-OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+OUTPUT_PATH = Path("latest.json")
 
 # =========================
-# FRED SERIES (CORE MACRO)
+# FRED SERIES
 # =========================
-# Keep this lean & robust
 
 FRED_SERIES = {
-    "real_yields_10y": "DFII10",           # 10Y TIPS (Gold critical)
-    "dxy_proxy": "DTWEXBGS",               # Broad USD index
-    "sp500_proxy": "SP500",                # S&P500 index
-    "vix_proxy": "VIXCLS",                 # Volatility
-    "gold_lbma": "GOLDAMGBD228NLBM",        # Gold (may fail intermittently)
+    "real_yields": "DFII10",
+    "usd": "DTWEXBGS",
+    "vix": "VIXCLS",
+    "sp500": "SP500",
+    "gold": "GOLDAMGBD228NLBM",
 }
 
 # =========================
 # DATA FETCH
 # =========================
 
-def fred_observations(series_id: str, max_points: int = 120) -> pd.Series:
-    """
-    Fetch FRED series safely.
-    - No date params (FRED handles bounds)
-    - Fault tolerant
-    """
+def fred_series(series_id, points=120):
     url = "https://api.stlouisfed.org/fred/series/observations"
     params = {
         "series_id": series_id,
@@ -50,119 +44,157 @@ def fred_observations(series_id: str, max_points: int = 120) -> pd.Series:
     try:
         r = requests.get(url, params=params, timeout=30)
         r.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"[WARN] FRED fetch failed for {series_id}: {e}")
+    except requests.RequestException:
         return pd.Series(dtype=float)
 
-    data = r.json()
-    obs = data.get("observations", [])
+    obs = r.json().get("observations", [])
+    obs = obs[-points:]
 
-    if not obs:
-        return pd.Series(dtype=float)
-
-    obs = obs[-max_points:]
-
-    cleaned = {}
+    data = {}
     for o in obs:
-        if o.get("value") not in (".", None):
+        if o["value"] not in (".", None):
             try:
-                cleaned[o["date"]] = float(o["value"])
+                data[o["date"]] = float(o["value"])
             except ValueError:
-                continue
+                pass
 
-    return pd.Series(cleaned)
+    return pd.Series(data)
 
-# =========================
-# ANALYSIS LOGIC
-# =========================
-
-def rate_of_change(series: pd.Series, periods: int = 5) -> float:
-    if len(series) <= periods:
+def roc(series, n=5):
+    if len(series) <= n:
         return 0.0
-    return series.iloc[-1] - series.iloc[-periods - 1]
+    return series.iloc[-1] - series.iloc[-n - 1]
 
-def classify_bias(score: float) -> str:
+# =========================
+# MACRO LOGIC
+# =========================
+
+def classify(score):
     if score > 0.5:
         return "Bullish"
     if score < -0.5:
         return "Bearish"
     return "Neutral"
 
+def risk_regime(series):
+    score = 0
+    score -= roc(series.get("real_yields", pd.Series()))
+    score -= roc(series.get("vix", pd.Series())) * 0.5
+    score -= roc(series.get("usd", pd.Series())) * 0.7
+
+    if score > 0.5:
+        return "Risk-On"
+    if score < -0.5:
+        return "Risk-Off"
+    return "Mixed"
+
+# =========================
+# CPI / FOMC / NFP
+# =========================
+
+def detect_macro_risk():
+    if not TE_API_KEY:
+        return {
+            "risk": False,
+            "message": "Macro calendar not connected"
+        }
+
+    try:
+        url = "https://api.tradingeconomics.com/calendar"
+        params = {
+            "c": TE_API_KEY,
+            "country": "United States"
+        }
+        r = requests.get(url, params=params, timeout=30)
+        r.raise_for_status()
+    except requests.RequestException:
+        return {
+            "risk": False,
+            "message": "Macro calendar unavailable"
+        }
+
+    now = datetime.utcnow()
+    window = now + timedelta(hours=24)
+
+    HIGH_IMPACT = ["CPI", "Fed", "FOMC", "Nonfarm Payrolls"]
+
+    for ev in r.json():
+        name = ev.get("Event", "")
+        date_str = ev.get("Date")
+
+        if not date_str:
+            continue
+
+        try:
+            ev_date = datetime.fromisoformat(date_str.replace("Z",""))
+        except ValueError:
+            continue
+
+        if now <= ev_date <= window:
+            if any(k.lower() in name.lower() for k in HIGH_IMPACT):
+                return {
+                    "risk": True,
+                    "event": name,
+                    "message": f"High-impact risk: {name} within 24h"
+                }
+
+    return {
+        "risk": False,
+        "message": "No high-impact macro risk in next 24h"
+    }
+
 # =========================
 # MAIN
 # =========================
 
 def main():
-    # Fetch macro series
-    series_data = {}
+    series = {k: fred_series(v) for k, v in FRED_SERIES.items()}
 
-    for name, sid in FRED_SERIES.items():
-        s = fred_observations(sid)
-        if not s.empty:
-            series_data[name] = s
-        else:
-            print(f"[INFO] Skipping {name} (no data)")
+    # -------- US500 --------
+    us_score = 0
+    us_drivers = []
 
-    # =========================
-    # US500 FUNDAMENTALS
-    # =========================
+    ry = roc(series["real_yields"])
+    vix = roc(series["vix"])
 
-    us500_score = 0.0
-    us500_drivers = []
+    us_score -= ry
+    us_score -= vix * 0.5
 
-    if "real_yields_10y" in series_data:
-        roc = rate_of_change(series_data["real_yields_10y"])
-        us500_score -= roc
-        us500_drivers.append("Real yields easing" if roc < 0 else "Real yields rising")
+    us_drivers.append("Real yields easing" if ry < 0 else "Real yields rising")
+    us_drivers.append("Volatility elevated" if vix > 0 else "Volatility falling")
 
-    if "vix_proxy" in series_data:
-        roc = rate_of_change(series_data["vix_proxy"])
-        us500_score -= roc * 0.5
-        us500_drivers.append("Volatility falling" if roc < 0 else "Volatility elevated")
+    us_bias = classify(us_score)
 
-    us500_bias = classify_bias(us500_score)
+    # -------- GOLD --------
+    g_score = 0
+    g_drivers = []
 
-    # =========================
-    # GOLD FUNDAMENTALS
-    # =========================
+    usd = roc(series["usd"])
+    g_score -= ry
+    g_score -= usd * 0.7
 
-    gold_score = 0.0
-    gold_drivers = []
+    g_drivers.append("Real yields falling" if ry < 0 else "Real yields rising")
+    g_drivers.append("USD weakening" if usd < 0 else "USD strengthening")
 
-    if "real_yields_10y" in series_data:
-        roc = rate_of_change(series_data["real_yields_10y"])
-        gold_score -= roc
-        gold_drivers.append("Real yields falling" if roc < 0 else "Real yields rising")
-
-    if "dxy_proxy" in series_data:
-        roc = rate_of_change(series_data["dxy_proxy"])
-        gold_score -= roc * 0.7
-        gold_drivers.append("USD weakening" if roc < 0 else "USD strengthening")
-
-    gold_bias = classify_bias(gold_score)
-
-    # =========================
-    # OUTPUT
-    # =========================
+    g_bias = classify(g_score)
 
     payload = {
         "updated_utc": datetime.utcnow().isoformat(),
+        "macro_risk": detect_macro_risk(),
+        "risk_regime": risk_regime(series),
         "us500": {
-            "bias": us500_bias,
-            "confidence": "High" if abs(us500_score) > 1 else "Medium",
-            "drivers": us500_drivers[:3],
+            "bias": us_bias,
+            "confidence": "High" if abs(us_score) > 1 else "Medium",
+            "drivers": us_drivers[:3],
         },
         "gold": {
-            "bias": gold_bias,
-            "confidence": "High" if abs(gold_score) > 1 else "Medium",
-            "drivers": gold_drivers[:3],
-        },
+            "bias": g_bias,
+            "confidence": "High" if abs(g_score) > 1 else "Medium",
+            "drivers": g_drivers[:3],
+        }
     }
 
-    with open(OUTPUT_PATH, "w") as f:
-        json.dump(payload, f, indent=2)
-
-    print("[SUCCESS] latest.json updated")
+    OUTPUT_PATH.write_text(json.dumps(payload, indent=2))
 
 if __name__ == "__main__":
     main()
