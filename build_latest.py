@@ -31,7 +31,7 @@ def fred_observations(series_id: str, days_back: int = 120) -> pd.Series:
     if not FRED_API_KEY:
         raise RuntimeError("FRED_API_KEY is required. Get a free key from FRED.")
 
-    end = datetime.now(timezone.utc).date()
+    end = datetime.now(timezone.utc).date() - timedelta(days=1)
     start = end - timedelta(days=days_back)
 
     url = "https://api.stlouisfed.org/fred/series/observations"
