@@ -42,7 +42,12 @@ def fred_observations(series_id: str, days_back: int = 120) -> pd.Series:
 
     }
     r = requests.get(url, params=params, timeout=30)
+    try:
     r.raise_for_status()
+except requests.exceptions.HTTPError as e:
+    print(f"FRED fetch failed for {series_id}: {e}")
+    return pd.Series(dtype=float)
+
     data = r.json()
 
     obs = data.get("observations", [])
@@ -363,7 +368,11 @@ def ai_polish(snapshot: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def main() -> None:
-    series = {name: fred_observations(sid) for name, sid in FRED_SERIES.items()}
+    series = {
+    name: s
+    for name, sid in FRED_SERIES.items()
+    if not (s := fred_observations(sid)).empty
+}
     signals = compute_signals(series)
     bias = score_bias(signals)
 
