@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Macro Execution Dashboard</title>
 
+<!-- Manrope Font (FTMO-style soft premium) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --bg:#0b0f14;
@@ -28,26 +33,36 @@
 
 body {
   margin:0;
-  font-family: Inter, system-ui, sans-serif;
+  font-family:"Manrope", Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background:
     radial-gradient(1200px 600px at top, #101828 0%, #0b0f14 60%);
   color:var(--text);
+  letter-spacing:0.1px;
 }
 
 .container {
   max-width:1200px;
   margin:auto;
-  padding:28px;
+  padding:30px;
 }
 
 h1 {
-  font-size:28px;
-  letter-spacing:.3px;
-  margin-bottom:4px;
+  font-size:30px;
+  font-weight:700;
+  letter-spacing:0.2px;
+  margin-bottom:6px;
+}
+
+h3 {
+  font-size:18px;
+  font-weight:600;
+  margin:28px 0 14px;
+  color:#dbe2f1;
 }
 
 .updated {
-  font-size:12px;
+  font-size:13px;
+  font-weight:500;
   color:var(--muted);
   margin-bottom:22px;
 }
@@ -59,6 +74,7 @@ h1 {
   border-radius:14px;
   margin-bottom:28px;
   font-size:14px;
+  font-weight:600;
   box-shadow:var(--glow-info);
 }
 
@@ -74,11 +90,12 @@ h1 {
   border-radius:18px;
   padding:22px;
   box-shadow:0 12px 34px rgba(0,0,0,.45);
-  position:relative;
 }
 
 .asset {
   font-size:20px;
+  font-weight:600;
+  letter-spacing:0.15px;
   margin-bottom:6px;
 }
 
@@ -86,26 +103,16 @@ h1 {
   font-size:40px;
   font-weight:800;
   margin-bottom:6px;
-  letter-spacing:.5px;
+  letter-spacing:0.4px;
 }
 
-.bias.bullish {
-  color:var(--bull);
-  text-shadow:var(--glow-bull);
-}
-
-.bias.bearish {
-  color:var(--bear);
-  text-shadow:var(--glow-bear);
-}
-
-.bias.neutral {
-  color:var(--neutral);
-  text-shadow:var(--glow-neutral);
-}
+.bias.bullish { color:var(--bull); text-shadow:var(--glow-bull); }
+.bias.bearish { color:var(--bear); text-shadow:var(--glow-bear); }
+.bias.neutral { color:var(--neutral); text-shadow:var(--glow-neutral); }
 
 .conf {
-  font-size:12px;
+  font-size:13px;
+  font-weight:500;
   color:var(--muted);
   margin-bottom:12px;
 }
@@ -117,6 +124,7 @@ ul {
 
 li {
   font-size:14px;
+  font-weight:500;
   margin-bottom:6px;
   color:#cfd6e4;
 }
@@ -125,32 +133,23 @@ li {
   font-size:24px;
   font-weight:800;
   margin-top:10px;
+  letter-spacing:0.3px;
 }
 
-.permission.green {
-  color:var(--bull);
-  text-shadow:var(--glow-bull);
-}
-
-.permission.amber {
-  color:var(--neutral);
-  text-shadow:var(--glow-neutral);
-}
-
-.permission.red {
-  color:var(--bear);
-  text-shadow:var(--glow-bear);
-}
+.permission.green { color:var(--bull); text-shadow:var(--glow-bull); }
+.permission.amber { color:var(--neutral); text-shadow:var(--glow-neutral); }
+.permission.red { color:var(--bear); text-shadow:var(--glow-bear); }
 
 select {
   width:100%;
-  margin-top:6px;
-  padding:10px;
+  margin-top:8px;
+  padding:10px 12px;
   background:#0b0f14;
   color:var(--text);
   border:1px solid var(--card-border);
   border-radius:8px;
   font-size:14px;
+  font-family:inherit;
 }
 
 .badge {
@@ -159,6 +158,7 @@ select {
   border-radius:999px;
   font-size:12px;
   font-weight:700;
+  letter-spacing:0.4px;
 }
 
 .badge.on {
@@ -182,7 +182,8 @@ select {
 .regime-explain {
   margin-top:14px;
   font-size:14px;
-  line-height:1.55;
+  font-weight:500;
+  line-height:1.6;
   color:#cfd6e4;
 }
 
@@ -197,14 +198,17 @@ select {
 
 .ai-title {
   font-size:11px;
-  letter-spacing:.4px;
+  font-weight:700;
+  letter-spacing:0.6px;
   color:var(--info);
   margin-bottom:6px;
+  text-transform:uppercase;
 }
 
 .ai-text {
   font-size:14px;
-  line-height:1.45;
+  font-weight:500;
+  line-height:1.5;
 }
 </style>
 </head>
@@ -268,7 +272,7 @@ fetch("latest.json")
     <div class="regime-explain">
       <strong>Risk-On:</strong> Trend continuation favoured, pullbacks buyable.<br>
       <strong>Risk-Off:</strong> Defensive conditions, failed breaks common.<br>
-      <strong>Mixed:</strong> No dominant tailwind, A+ setups only.
+      <strong>Mixed:</strong> No dominant tailwind — A+ setups only.
     </div>
   `;
 });
