@@ -7,109 +7,204 @@
 
 <style>
 :root {
-  --bg:#0e1117;
-  --card:#161b22;
+  --bg:#0b0f14;
+  --card:#121826;
+  --card-border:#1e2636;
   --text:#e6edf3;
-  --muted:#9da7b3;
-  --bull:#2ecc71;
-  --bear:#e74c3c;
-  --neutral:#f1c40f;
-  --warn:#ff9f43;
+  --muted:#8b93a6;
+
+  --bull:#00ff9c;
+  --bear:#ff4d4d;
+  --neutral:#ffcc00;
+  --info:#4ddcff;
+
+  --glow-bull:0 0 14px rgba(0,255,156,.45);
+  --glow-bear:0 0 14px rgba(255,77,77,.45);
+  --glow-neutral:0 0 14px rgba(255,204,0,.45);
+  --glow-info:0 0 14px rgba(77,220,255,.45);
 }
 
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 
 body {
   margin:0;
   font-family: Inter, system-ui, sans-serif;
-  background:var(--bg);
+  background:
+    radial-gradient(1200px 600px at top, #101828 0%, #0b0f14 60%);
   color:var(--text);
 }
 
 .container {
   max-width:1200px;
   margin:auto;
-  padding:24px;
+  padding:28px;
 }
 
-h1 { margin-bottom:6px; }
+h1 {
+  font-size:28px;
+  letter-spacing:.3px;
+  margin-bottom:4px;
+}
 
 .updated {
-  font-size:13px;
+  font-size:12px;
   color:var(--muted);
-  margin-bottom:16px;
+  margin-bottom:22px;
 }
 
 .banner {
-  background:#1f2937;
-  border-left:6px solid var(--warn);
-  padding:14px 16px;
-  border-radius:10px;
-  margin-bottom:24px;
+  background:linear-gradient(90deg,#0f1c2d,#0c1320);
+  border-left:4px solid var(--info);
+  padding:14px 18px;
+  border-radius:14px;
+  margin-bottom:28px;
   font-size:14px;
+  box-shadow:var(--glow-info);
 }
 
 .grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:22px;
 }
 
 .card {
-  background:var(--card);
-  border-radius:14px;
-  padding:20px;
+  background:linear-gradient(180deg,#121826,#0f1523);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 12px 34px rgba(0,0,0,.45);
+  position:relative;
 }
 
-.asset { font-size:20px; margin-bottom:6px; }
+.asset {
+  font-size:20px;
+  margin-bottom:6px;
+}
 
-.bias { font-size:34px; font-weight:700; }
+.bias {
+  font-size:40px;
+  font-weight:800;
+  margin-bottom:6px;
+  letter-spacing:.5px;
+}
 
-.bullish {color:var(--bull);}
-.bearish {color:var(--bear);}
-.neutral {color:var(--neutral);}
+.bias.bullish {
+  color:var(--bull);
+  text-shadow:var(--glow-bull);
+}
+
+.bias.bearish {
+  color:var(--bear);
+  text-shadow:var(--glow-bear);
+}
+
+.bias.neutral {
+  color:var(--neutral);
+  text-shadow:var(--glow-neutral);
+}
 
 .conf {
-  font-size:13px;
+  font-size:12px;
   color:var(--muted);
-  margin-bottom:10px;
+  margin-bottom:12px;
+}
+
+ul {
+  padding-left:18px;
+  margin:0;
+}
+
+li {
+  font-size:14px;
+  margin-bottom:6px;
+  color:#cfd6e4;
 }
 
 .permission {
-  font-size:22px;
-  font-weight:700;
+  font-size:24px;
+  font-weight:800;
+  margin-top:10px;
 }
 
-.green {color:var(--bull);}
-.amber {color:var(--warn);}
-.red {color:var(--bear);}
+.permission.green {
+  color:var(--bull);
+  text-shadow:var(--glow-bull);
+}
+
+.permission.amber {
+  color:var(--neutral);
+  text-shadow:var(--glow-neutral);
+}
+
+.permission.red {
+  color:var(--bear);
+  text-shadow:var(--glow-bear);
+}
 
 select {
   width:100%;
-  padding:8px;
-  background:#0e1117;
-  color:var(--text);
-  border:1px solid #2a2f36;
-  border-radius:6px;
   margin-top:6px;
+  padding:10px;
+  background:#0b0f14;
+  color:var(--text);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  font-size:14px;
 }
 
 .badge {
   display:inline-block;
-  padding:6px 10px;
+  padding:6px 14px;
   border-radius:999px;
   font-size:12px;
-  font-weight:600;
+  font-weight:700;
 }
 
-.badge.on {background:rgba(46,204,113,0.15); color:var(--bull);}
-.badge.off {background:rgba(231,76,60,0.15); color:var(--bear);}
-.badge.mixed {background:rgba(241,196,15,0.15); color:var(--neutral);}
+.badge.on {
+  color:var(--bull);
+  border:1px solid rgba(0,255,156,.45);
+  box-shadow:var(--glow-bull);
+}
+
+.badge.off {
+  color:var(--bear);
+  border:1px solid rgba(255,77,77,.45);
+  box-shadow:var(--glow-bear);
+}
+
+.badge.mixed {
+  color:var(--neutral);
+  border:1px solid rgba(255,204,0,.45);
+  box-shadow:var(--glow-neutral);
+}
 
 .regime-explain {
-  margin-top:12px;
+  margin-top:14px;
   font-size:14px;
-  line-height:1.5;
+  line-height:1.55;
+  color:#cfd6e4;
+}
+
+.ai-box {
+  margin-top:16px;
+  padding:14px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#0c1525,#0a1220);
+  border:1px solid #1f2b44;
+  box-shadow:var(--glow-info);
+}
+
+.ai-title {
+  font-size:11px;
+  letter-spacing:.4px;
+  color:var(--info);
+  margin-bottom:6px;
+}
+
+.ai-text {
+  font-size:14px;
+  line-height:1.45;
 }
 </style>
 </head>
@@ -146,19 +241,17 @@ fetch("latest.json")
   document.getElementById("updated").innerText =
     "Last updated (UTC): " + data.updated_utc.replace("T"," ").split(".")[0];
 
-  // Macro risk banner
   if (data.macro_risk && data.macro_risk.risk) {
     riskBanner.innerHTML = "⚠️ " + data.macro_risk.message;
-    riskBanner.style.borderLeftColor = "#e74c3c";
+    riskBanner.style.borderLeftColor = "var(--bear)";
   } else {
     riskBanner.innerHTML = "✅ No high-impact macro risk (CPI / FOMC / NFP)";
-    riskBanner.style.borderLeftColor = "#2ecc71";
+    riskBanner.style.borderLeftColor = "var(--bull)";
   }
 
   renderAsset("us500","US500",data.us500);
   renderAsset("gold","Gold (XAUUSD)",data.gold);
 
-  // Load saved EMA bias or default to Neutral
   const emaBias = {
     us500: localStorage.getItem("ema_us500") || "Neutral",
     gold: localStorage.getItem("ema_gold") || "Neutral"
@@ -167,16 +260,15 @@ fetch("latest.json")
   renderPermission("us500Permission","US500",data.us500,"ema_us500",emaBias.us500);
   renderPermission("goldPermission","Gold",data.gold,"ema_gold",emaBias.gold);
 
-  // Market regime
   const regime = data.risk_regime || "Mixed";
   const cls = regime === "Risk-On" ? "on" : regime === "Risk-Off" ? "off" : "mixed";
 
   document.getElementById("regime").innerHTML = `
     <div class="badge ${cls}">${regime}</div>
     <div class="regime-explain">
-      <strong>Risk-On:</strong> Trend continuation favoured. Buy pullbacks, allow runners.<br>
-      <strong>Risk-Off:</strong> Defensive conditions. Expect chop, failed breaks.<br>
-      <strong>Mixed:</strong> No dominant macro tailwind. A+ setups only.
+      <strong>Risk-On:</strong> Trend continuation favoured, pullbacks buyable.<br>
+      <strong>Risk-Off:</strong> Defensive conditions, failed breaks common.<br>
+      <strong>Mixed:</strong> No dominant tailwind, A+ setups only.
     </div>
   `;
 });
@@ -188,6 +280,11 @@ function renderAsset(id,title,obj){
     <div class="bias ${cls}">${obj.bias}</div>
     <div class="conf">Confidence: ${obj.confidence}</div>
     <ul>${obj.drivers.map(d=>`<li>${d}</li>`).join("")}</ul>
+    ${obj.macro_summary ? `
+      <div class="ai-box">
+        <div class="ai-title">Macro Interpretation</div>
+        <div class="ai-text">${escapeHtml(obj.macro_summary)}</div>
+      </div>` : ""}
   `;
 }
 
@@ -204,13 +301,22 @@ function renderPermission(id,title,fund,storageKey,currentBias){
       <option ${currentBias==="Bearish"?"selected":""}>Bearish</option>
       <option ${currentBias==="Neutral"?"selected":""}>Neutral</option>
     </select>
-    <div class="permission ${cls}" style="margin-top:10px">${text}</div>
+    <div class="permission ${cls}">${text}</div>
   `;
 }
 
 function updateBias(key,value){
   localStorage.setItem(key,value);
   location.reload();
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 </script>
 </body>
