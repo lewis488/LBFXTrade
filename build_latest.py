@@ -46,6 +46,7 @@ def fred_observations(series_id: str, days_back: int = 120) -> pd.Series:
     data = r.json()
 
     obs = data.get("observations", [])
+    obs = obs[-days_back:]
     if not obs:
         raise RuntimeError(f"No observations returned for {series_id}")
 
