@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fundamentals Snapshot – US500 & XAUUSD</title>
+  <style>
+    :root{--bg:#0b0f14;--card:#101826;--muted:#94a3b8;--text:#e2e8f0;--line:#1f2a3a}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .top{display:flex;gap:12px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+    h1{font-size:20px;margin:0}
+    .muted{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:16px}
+    .card{grid-column:span 6;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+    @media(max-width:900px){.card{grid-column:span 12}}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .badge{padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px}
+    .bBull{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.3)}
+    .bBear{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3)}
+    .bNeutral{background:rgba(148,163,184,.12);border-color:rgba(148,163,184,.3)}
+    ul{margin:10px 0 0 18px;padding:0}
+    li{margin:6px 0;color:var(--text);font-size:14px}
+    .section{grid-column:span 12;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border-bottom:1px solid var(--line);padding:10px 6px;text-align:left;font-size:13px}
+    th{color:var(--muted);font-weight:600}
+    .pill{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Fundamentals Snapshot</h1>
+        <div class="muted" id="asof">Loading…</div>
+      </div>
+      <div class="muted">Purpose: bias + timing + risk (not signals)</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+<script>
+function badgeClass(bias){
+  if(bias==='Bullish') return 'badge bBull';
+  if(bias==='Bearish') return 'badge bBear';
+  return 'badge bNeutral';
+}
+function esc(s){return (s??'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+async function main(){
+  const res = await fetch('./latest.json',{cache:'no-store'});
+  const data = await res.json();
+  document.getElementById('asof').textContent = `As of ${data.as_of_utc} UTC • next refresh: scheduled`;
+
+  const grid = document.getElementById('grid');
+  const mkCard = (m) => {
+    const drivers = (m.drivers||[]).map(d=>`<li>${esc(d)}</li>`).join('');
+    const actions = (m.actions||[]).map(d=>`<li>${esc(d)}</li>`).join('');
+    return `
+      <div class="card">
+        <div class="row">
+          <div style="font-size:16px;font-weight:700">${esc(m.name)}</div>
+          <div class="${badgeClass(m.bias)}">${esc(m.bias)} • ${esc(m.confidence||'')}</div>
+        </div>
+        <div class="muted" style="margin-top:8px">Top drivers</div>
+        <ul>${drivers || '<li class="muted">No drivers available</li>'}</ul>
+        <div class="muted" style="margin-top:10px">Actionable guidance</div>
+        <ul>${actions || '<li class="muted">No guidance available</li>'}</ul>
+      </div>
+    `;
+  }
+
+  const section = (title, bodyHtml) => `
+    <div class="section">
+      <div class="row">
+        <div style="font-size:16px;font-weight:700">${esc(title)}</div>
+        <span class="pill">snapshot</span>
+      </div>
+      ${bodyHtml}
+    </div>
+  `;
+
+  let html = '';
+  html += mkCard(data.markets.US500);
+  html += mkCard(data.markets.XAUUSD);
+
+  const shifts = (data.recent_changes||[]).map(x=>`<li>${esc(x)}</li>`).join('') || '<li class="muted">None</li>';
+  html += section('What changed recently', `<ul>${shifts}</ul>`);
+
+  const events = data.upcoming_events||[];
+  const rows = events.map(e=>`<tr><td>${esc(e.time_utc)}</td><td>${esc(e.event)}</td><td>${esc(e.impact)}</td><td>${esc(e.assets.join(', '))}</td><td>${esc(e.note||'')}</td></tr>`).join('');
+  html += section('Upcoming risk events (7d)', `
+    <table>
+      <thead><tr><th>Time (UTC)</th><th>Event</th><th>Impact</th><th>Affects</th><th>Why it matters</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="5" class="muted">No calendar source configured</td></tr>'}</tbody>
+    </table>
+  `);
+
+  const risk = data.risk_environment || {};
+  html += section('Cross-asset risk environment', `
+    <div class="muted" style="margin-top:8px">${esc(risk.summary||'')}</div>
+    <ul>${(risk.bullets||[]).map(b=>`<li>${esc(b)}</li>`).join('') || '<li class="muted">No data</li>'}</ul>
+  `);
+
+  grid.innerHTML = html;
+}
+main().catch(err=>{
+  document.getElementById('asof').textContent = 'Failed to load latest.json';
+  console.error(err);
+});
+</script>
+</body>
+</html>
