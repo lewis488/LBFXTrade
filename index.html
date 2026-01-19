@@ -75,14 +75,6 @@ h1 { margin-bottom:6px; }
   margin-bottom:10px;
 }
 
-ul { padding-left:18px; margin:0; }
-li { font-size:14px; margin-bottom:6px; }
-
-.section-title {
-  margin:32px 0 12px;
-  font-size:18px;
-}
-
 .permission {
   font-size:22px;
   font-weight:700;
@@ -103,6 +95,13 @@ li { font-size:14px; margin-bottom:6px; }
 .badge.on {background:rgba(46,204,113,0.15); color:var(--bull);}
 .badge.off {background:rgba(231,76,60,0.15); color:var(--bear);}
 .badge.mixed {background:rgba(241,196,15,0.15); color:var(--neutral);}
+
+.regime-explain {
+  margin-top:12px;
+  font-size:14px;
+  line-height:1.5;
+}
+
 </style>
 </head>
 
@@ -119,13 +118,13 @@ li { font-size:14px; margin-bottom:6px; }
   <div class="card" id="gold"></div>
 </div>
 
-<div class="section-title">Execution Permission</div>
+<h3>15-Minute EMA Execution Permission</h3>
 <div class="grid">
   <div class="card" id="us500Permission"></div>
   <div class="card" id="goldPermission"></div>
 </div>
 
-<div class="section-title">Market Regime</div>
+<h3>Market Regime</h3>
 <div class="card" id="regime"></div>
 
 </div>
@@ -138,66 +137,57 @@ fetch("latest.json")
   document.getElementById("updated").innerText =
     "Last updated (UTC): " + data.updated_utc.replace("T"," ").split(".")[0];
 
-  // Macro risk banner
   if (data.macro_risk && data.macro_risk.risk) {
-    document.getElementById("riskBanner").innerHTML =
-      "⚠️ " + data.macro_risk.message;
-    document.getElementById("riskBanner").style.borderLeftColor = "#e74c3c";
+    riskBanner.innerHTML = "⚠️ " + data.macro_risk.message;
+    riskBanner.style.borderLeftColor = "#e74c3c";
   } else {
-    document.getElementById("riskBanner").innerHTML =
-      "✅ No high-impact macro risk detected (CPI / FOMC / NFP)";
-    document.getElementById("riskBanner").style.borderLeftColor = "#2ecc71";
+    riskBanner.innerHTML = "✅ No high-impact macro risk (CPI / FOMC / NFP)";
+    riskBanner.style.borderLeftColor = "#2ecc71";
   }
 
   renderAsset("us500","US500",data.us500);
   renderAsset("gold","Gold (XAUUSD)",data.gold);
 
-  // ---- MANUAL EMA BIAS PER ASSET ----
-  const emaBias = {
-    us500: "Bullish",   // change manually
-    gold: "Bearish"    // change manually
+  /* 🔹 MANUAL 15m EMA BIAS (change daily) */
+  const ema15 = {
+    us500: "Bullish",
+    gold: "Bearish"
   };
 
-  renderPermission("us500Permission","US500",data.us500,emaBias.us500);
-  renderPermission("goldPermission","Gold",data.gold,emaBias.gold);
+  renderPermission("us500Permission","US500",data.us500,ema15.us500);
+  renderPermission("goldPermission","Gold",data.gold,ema15.gold);
 
-  // Risk regime
-  let regime = data.risk_regime || "Mixed";
-  let badgeClass = regime === "Risk-On" ? "on" :
-                   regime === "Risk-Off" ? "off" : "mixed";
+  const regime = data.risk_regime || "Mixed";
+  const cls = regime === "Risk-On" ? "on" : regime === "Risk-Off" ? "off" : "mixed";
 
   document.getElementById("regime").innerHTML = `
-    <div>Current Regime:</div>
-    <div class="badge ${badgeClass}">${regime}</div>
-    <div class="conf">Sets expectations, not entries.</div>
+    <div class="badge ${cls}">${regime}</div>
+    <div class="regime-explain">
+      <strong>Risk-On:</strong> Trend continuation favoured. Buy pullbacks, hold runners.<br>
+      <strong>Risk-Off:</strong> Defensive conditions. Expect chop, failed breaks.<br>
+      <strong>Mixed:</strong> No macro tailwind. A+ setups only.
+    </div>
   `;
 });
 
 function renderAsset(id,title,obj){
-  const cls = obj.bias.toLowerCase();
+  const cls=obj.bias.toLowerCase();
   document.getElementById(id).innerHTML = `
     <div class="asset">${title}</div>
     <div class="bias ${cls}">${obj.bias}</div>
     <div class="conf">Confidence: ${obj.confidence}</div>
-    <ul>${obj.drivers.map(x=>`<li>${x}</li>`).join("")}</ul>
+    <ul>${obj.drivers.map(d=>`<li>${d}</li>`).join("")}</ul>
   `;
 }
 
-function renderPermission(id,title,fundamental,ema){
-  let text = "Stand Aside";
-  let cls = "red";
-
-  if (ema === fundamental.bias && fundamental.confidence === "High") {
-    text = "Full Size Allowed";
-    cls = "green";
-  } else if (ema === fundamental.bias) {
-    text = "Reduce Size / A+ Only";
-    cls = "amber";
-  }
+function renderPermission(id,title,fund,ema){
+  let text="Stand Aside", cls="red";
+  if (ema===fund.bias && fund.confidence==="High"){ text="Full Size Allowed"; cls="green";}
+  else if (ema===fund.bias){ text="Reduce Size / A+ Only"; cls="amber";}
 
   document.getElementById(id).innerHTML = `
     <div class="asset">${title}</div>
-    <div class="conf">EMA Bias: <strong>${ema}</strong></div>
+    <div class="conf">15m EMA Bias: <strong>${ema}</strong></div>
     <div class="permission ${cls}">${text}</div>
   `;
 }
