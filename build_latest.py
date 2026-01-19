@@ -40,7 +40,7 @@ def fred_observations(series_id: str, days_back: int = 120) -> pd.Series:
         "api_key": FRED_API_KEY,
         "file_type": "json",
         "observation_start": start.isoformat(),
-        "observation_end": end.isoformat(),
+
     }
     r = requests.get(url, params=params, timeout=30)
     r.raise_for_status()
