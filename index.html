@@ -84,6 +84,16 @@ h1 { margin-bottom:6px; }
 .amber {color:var(--warn);}
 .red {color:var(--bear);}
 
+select {
+  width:100%;
+  padding:8px;
+  background:#0e1117;
+  color:var(--text);
+  border:1px solid #2a2f36;
+  border-radius:6px;
+  margin-top:6px;
+}
+
 .badge {
   display:inline-block;
   padding:6px 10px;
@@ -101,7 +111,6 @@ h1 { margin-bottom:6px; }
   font-size:14px;
   line-height:1.5;
 }
-
 </style>
 </head>
 
@@ -118,7 +127,7 @@ h1 { margin-bottom:6px; }
   <div class="card" id="gold"></div>
 </div>
 
-<h3>15-Minute EMA Execution Permission</h3>
+<h3>15-Minute EMA Bias (Manual)</h3>
 <div class="grid">
   <div class="card" id="us500Permission"></div>
   <div class="card" id="goldPermission"></div>
@@ -137,6 +146,7 @@ fetch("latest.json")
   document.getElementById("updated").innerText =
     "Last updated (UTC): " + data.updated_utc.replace("T"," ").split(".")[0];
 
+  // Macro risk banner
   if (data.macro_risk && data.macro_risk.risk) {
     riskBanner.innerHTML = "⚠️ " + data.macro_risk.message;
     riskBanner.style.borderLeftColor = "#e74c3c";
@@ -148,24 +158,25 @@ fetch("latest.json")
   renderAsset("us500","US500",data.us500);
   renderAsset("gold","Gold (XAUUSD)",data.gold);
 
-  /* 🔹 MANUAL 15m EMA BIAS (change daily) */
-  const ema15 = {
-    us500: "Bullish",
-    gold: "Bearish"
+  // Load saved EMA bias or default to Neutral
+  const emaBias = {
+    us500: localStorage.getItem("ema_us500") || "Neutral",
+    gold: localStorage.getItem("ema_gold") || "Neutral"
   };
 
-  renderPermission("us500Permission","US500",data.us500,ema15.us500);
-  renderPermission("goldPermission","Gold",data.gold,ema15.gold);
+  renderPermission("us500Permission","US500",data.us500,"ema_us500",emaBias.us500);
+  renderPermission("goldPermission","Gold",data.gold,"ema_gold",emaBias.gold);
 
+  // Market regime
   const regime = data.risk_regime || "Mixed";
   const cls = regime === "Risk-On" ? "on" : regime === "Risk-Off" ? "off" : "mixed";
 
   document.getElementById("regime").innerHTML = `
     <div class="badge ${cls}">${regime}</div>
     <div class="regime-explain">
-      <strong>Risk-On:</strong> Trend continuation favoured. Buy pullbacks, hold runners.<br>
+      <strong>Risk-On:</strong> Trend continuation favoured. Buy pullbacks, allow runners.<br>
       <strong>Risk-Off:</strong> Defensive conditions. Expect chop, failed breaks.<br>
-      <strong>Mixed:</strong> No macro tailwind. A+ setups only.
+      <strong>Mixed:</strong> No dominant macro tailwind. A+ setups only.
     </div>
   `;
 });
@@ -180,16 +191,26 @@ function renderAsset(id,title,obj){
   `;
 }
 
-function renderPermission(id,title,fund,ema){
+function renderPermission(id,title,fund,storageKey,currentBias){
   let text="Stand Aside", cls="red";
-  if (ema===fund.bias && fund.confidence==="High"){ text="Full Size Allowed"; cls="green";}
-  else if (ema===fund.bias){ text="Reduce Size / A+ Only"; cls="amber";}
+  if (currentBias===fund.bias && fund.confidence==="High"){ text="Full Size Allowed"; cls="green";}
+  else if (currentBias===fund.bias){ text="Reduce Size / A+ Only"; cls="amber";}
 
   document.getElementById(id).innerHTML = `
     <div class="asset">${title}</div>
-    <div class="conf">15m EMA Bias: <strong>${ema}</strong></div>
-    <div class="permission ${cls}">${text}</div>
+    <label class="conf">15m EMA Bias</label>
+    <select onchange="updateBias('${storageKey}', this.value)">
+      <option ${currentBias==="Bullish"?"selected":""}>Bullish</option>
+      <option ${currentBias==="Bearish"?"selected":""}>Bearish</option>
+      <option ${currentBias==="Neutral"?"selected":""}>Neutral</option>
+    </select>
+    <div class="permission ${cls}" style="margin-top:10px">${text}</div>
   `;
+}
+
+function updateBias(key,value){
+  localStorage.setItem(key,value);
+  location.reload();
 }
 </script>
 </body>
