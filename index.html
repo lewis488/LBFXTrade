@@ -32,10 +32,7 @@ body {
   padding:24px;
 }
 
-h1 {
-  margin-bottom:6px;
-  font-size:26px;
-}
+h1 { margin-bottom:6px; }
 
 .updated {
   font-size:13px;
@@ -64,15 +61,9 @@ h1 {
   padding:20px;
 }
 
-.asset {
-  font-size:20px;
-  margin-bottom:6px;
-}
+.asset { font-size:20px; margin-bottom:6px; }
 
-.bias {
-  font-size:36px;
-  font-weight:700;
-}
+.bias { font-size:34px; font-weight:700; }
 
 .bullish {color:var(--bull);}
 .bearish {color:var(--bear);}
@@ -84,15 +75,8 @@ h1 {
   margin-bottom:10px;
 }
 
-ul {
-  padding-left:18px;
-  margin:0;
-}
-
-li {
-  font-size:14px;
-  margin-bottom:6px;
-}
+ul { padding-left:18px; margin:0; }
+li { font-size:14px; margin-bottom:6px; }
 
 .section-title {
   margin:32px 0 12px;
@@ -102,7 +86,6 @@ li {
 .permission {
   font-size:22px;
   font-weight:700;
-  margin-top:6px;
 }
 
 .green {color:var(--bull);}
@@ -115,29 +98,11 @@ li {
   border-radius:999px;
   font-size:12px;
   font-weight:600;
-  margin-top:6px;
 }
 
 .badge.on {background:rgba(46,204,113,0.15); color:var(--bull);}
 .badge.off {background:rgba(231,76,60,0.15); color:var(--bear);}
 .badge.mixed {background:rgba(241,196,15,0.15); color:var(--neutral);}
-
-.regime-explain {
-  margin-top:14px;
-  font-size:14px;
-  line-height:1.5;
-}
-
-.regime-explain span {
-  display:block;
-  margin-bottom:8px;
-}
-
-.footer {
-  margin-top:36px;
-  font-size:12px;
-  color:var(--muted);
-}
 </style>
 </head>
 
@@ -147,9 +112,7 @@ li {
 <h1>Macro Execution Dashboard</h1>
 <div class="updated" id="updated">Loading…</div>
 
-<div class="banner" id="riskBanner">
-Checking macro risk…
-</div>
+<div class="banner" id="riskBanner">Checking macro risk…</div>
 
 <div class="grid">
   <div class="card" id="us500"></div>
@@ -157,14 +120,13 @@ Checking macro risk…
 </div>
 
 <div class="section-title">Execution Permission</div>
-<div class="card" id="permission"></div>
+<div class="grid">
+  <div class="card" id="us500Permission"></div>
+  <div class="card" id="goldPermission"></div>
+</div>
 
 <div class="section-title">Market Regime</div>
 <div class="card" id="regime"></div>
-
-<div class="footer">
-Context defines expectations. Structure defines entries.
-</div>
 
 </div>
 
@@ -190,27 +152,16 @@ fetch("latest.json")
   renderAsset("us500","US500",data.us500);
   renderAsset("gold","Gold (XAUUSD)",data.gold);
 
-  // Execution permission (manual EMA bias)
-  const emaBias = "Bullish";
+  // ---- MANUAL EMA BIAS PER ASSET ----
+  const emaBias = {
+    us500: "Bullish",   // change manually
+    gold: "Bearish"    // change manually
+  };
 
-  let permission = "Stand Aside";
-  let cls = "red";
+  renderPermission("us500Permission","US500",data.us500,emaBias.us500);
+  renderPermission("goldPermission","Gold",data.gold,emaBias.gold);
 
-  if (emaBias === data.us500.bias && data.us500.confidence === "High") {
-    permission = "Full Size Allowed";
-    cls = "green";
-  } else if (emaBias === data.us500.bias) {
-    permission = "Reduce Size / A+ Only";
-    cls = "amber";
-  }
-
-  document.getElementById("permission").innerHTML = `
-    <div>EMA Bias: <strong>${emaBias}</strong></div>
-    <div class="permission ${cls}">${permission}</div>
-    <div class="conf">Used as permission, not a signal.</div>
-  `;
-
-  // Risk regime with explanation
+  // Risk regime
   let regime = data.risk_regime || "Mixed";
   let badgeClass = regime === "Risk-On" ? "on" :
                    regime === "Risk-Off" ? "off" : "mixed";
@@ -218,12 +169,7 @@ fetch("latest.json")
   document.getElementById("regime").innerHTML = `
     <div>Current Regime:</div>
     <div class="badge ${badgeClass}">${regime}</div>
-
-    <div class="regime-explain">
-      <span>🟢 <strong>Risk-On</strong>: Trend continuation favoured. Buy pullbacks, allow runners, press winners.</span>
-      <span>🔴 <strong>Risk-Off</strong>: Defensive conditions. Expect chop, failed breakouts, patience required.</span>
-      <span>🟡 <strong>Mixed</strong>: No dominant tailwind. A+ setups only, reduced expectations.</span>
-    </div>
+    <div class="conf">Sets expectations, not entries.</div>
   `;
 });
 
@@ -234,6 +180,25 @@ function renderAsset(id,title,obj){
     <div class="bias ${cls}">${obj.bias}</div>
     <div class="conf">Confidence: ${obj.confidence}</div>
     <ul>${obj.drivers.map(x=>`<li>${x}</li>`).join("")}</ul>
+  `;
+}
+
+function renderPermission(id,title,fundamental,ema){
+  let text = "Stand Aside";
+  let cls = "red";
+
+  if (ema === fundamental.bias && fundamental.confidence === "High") {
+    text = "Full Size Allowed";
+    cls = "green";
+  } else if (ema === fundamental.bias) {
+    text = "Reduce Size / A+ Only";
+    cls = "amber";
+  }
+
+  document.getElementById(id).innerHTML = `
+    <div class="asset">${title}</div>
+    <div class="conf">EMA Bias: <strong>${ema}</strong></div>
+    <div class="permission ${cls}">${text}</div>
   `;
 }
 </script>
