@@ -1,13 +1,13 @@
 {
-  "updated_utc": "2026-01-20T13:58:20.252944",
+  "updated_utc": "2026-01-20T20:36:08.925059",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
   },
   "risk_regime": "Risk-Off",
   "us500": {
-    "bias": "Neutral",
-    "confidence": "Medium",
+    "bias": "Bearish",
+    "confidence": "High",
     "drivers": [
       "Real yields easing",
       "Volatility elevated"
