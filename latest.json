@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-01-21T19:17:55.896546",
+  "updated_utc": "2026-01-22T04:14:59.476058",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
@@ -18,7 +18,7 @@
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
-      "USD strengthening"
+      "USD weakening"
     ]
   }
 }
