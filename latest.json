@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-01-23T13:55:18.009578",
+  "updated_utc": "2026-01-23T19:02:10.719336",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
@@ -10,7 +10,7 @@
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
-      "Volatility elevated"
+      "Volatility falling"
     ]
   },
   "gold": {
