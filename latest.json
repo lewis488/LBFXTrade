@@ -1,12 +1,12 @@
 {
-  "updated_utc": "2026-02-04T14:29:23.813225",
+  "updated_utc": "2026-02-04T19:53:19.451947",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
   },
-  "risk_regime": "Risk-On",
+  "risk_regime": "Mixed",
   "us500": {
-    "bias": "Neutral",
+    "bias": "Bearish",
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
