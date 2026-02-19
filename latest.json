@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-02-19T12:39:41.929863",
+  "updated_utc": "2026-02-19T18:39:31.697375",
   "macro_risk": {
     "risk": true,
     "event": "CPIF MoM Final",
     "message": "High-impact risk: CPIF MoM Final within 24h"
   },
-  "risk_regime": "Risk-Off",
+  "risk_regime": "Mixed",
   "us500": {
     "bias": "Bearish",
-    "confidence": "High",
+    "confidence": "Medium",
     "drivers": [
       "Real yields easing",
       "Volatility elevated"
