@@ -1,10 +1,10 @@
 {
-  "updated_utc": "2026-03-18T18:44:31.778028",
+  "updated_utc": "2026-03-19T01:16:52.165345",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
   },
-  "risk_regime": "Mixed",
+  "risk_regime": "Risk-On",
   "us500": {
     "bias": "Bullish",
     "confidence": "High",
