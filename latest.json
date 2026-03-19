@@ -1,16 +1,16 @@
 {
-  "updated_utc": "2026-03-19T12:39:21.282845",
+  "updated_utc": "2026-03-19T18:42:19.661907",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
   },
-  "risk_regime": "Risk-On",
+  "risk_regime": "Risk-Off",
   "us500": {
-    "bias": "Bullish",
-    "confidence": "High",
+    "bias": "Neutral",
+    "confidence": "Medium",
     "drivers": [
       "Real yields rising",
-      "Volatility falling"
+      "Volatility elevated"
     ]
   },
   "gold": {
