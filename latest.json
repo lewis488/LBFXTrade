@@ -1,24 +1,24 @@
 {
-  "updated_utc": "2026-03-23T18:39:30.598834",
+  "updated_utc": "2026-03-24T01:10:39.613074",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
   },
-  "risk_regime": "Risk-Off",
+  "risk_regime": "Mixed",
   "us500": {
     "bias": "Neutral",
     "confidence": "Medium",
     "drivers": [
-      "Real yields easing",
+      "Real yields rising",
       "Volatility falling"
     ]
   },
   "gold": {
-    "bias": "Bearish",
+    "bias": "Neutral",
     "confidence": "Medium",
     "drivers": [
-      "Real yields falling",
-      "USD strengthening"
+      "Real yields rising",
+      "USD weakening"
     ]
   }
 }
