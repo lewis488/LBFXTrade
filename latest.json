@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-04-01T18:45:58.118557",
+  "updated_utc": "2026-04-02T01:19:29.328404",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
@@ -9,7 +9,7 @@
     "bias": "Bullish",
     "confidence": "Medium",
     "drivers": [
-      "Real yields rising",
+      "Real yields easing",
       "Volatility falling"
     ]
   },
@@ -17,7 +17,7 @@
     "bias": "Neutral",
     "confidence": "Medium",
     "drivers": [
-      "Real yields rising",
+      "Real yields falling",
       "USD strengthening"
     ]
   }
