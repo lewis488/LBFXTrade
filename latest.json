@@ -1,13 +1,13 @@
 {
-  "updated_utc": "2026-04-06T12:47:10.065048",
+  "updated_utc": "2026-04-06T18:42:30.767286",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
   },
-  "risk_regime": "Mixed",
+  "risk_regime": "Risk-On",
   "us500": {
     "bias": "Bullish",
-    "confidence": "Medium",
+    "confidence": "High",
     "drivers": [
       "Real yields easing",
       "Volatility falling"
