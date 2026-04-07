@@ -1,9 +1,8 @@
 {
-  "updated_utc": "2026-04-07T01:23:15.928779",
+  "updated_utc": "2026-04-07T07:04:03.009530",
   "macro_risk": {
-    "risk": true,
-    "event": "CPIF MoM Prel",
-    "message": "High-impact risk: CPIF MoM Prel within 24h"
+    "risk": false,
+    "message": "No high-impact macro risk in next 24h"
   },
   "risk_regime": "Risk-On",
   "us500": {
