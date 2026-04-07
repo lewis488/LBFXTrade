@@ -1,8 +1,9 @@
 {
-  "updated_utc": "2026-04-06T18:42:30.767286",
+  "updated_utc": "2026-04-07T01:23:15.928779",
   "macro_risk": {
-    "risk": false,
-    "message": "No high-impact macro risk in next 24h"
+    "risk": true,
+    "event": "CPIF MoM Prel",
+    "message": "High-impact risk: CPIF MoM Prel within 24h"
   },
   "risk_regime": "Risk-On",
   "us500": {
@@ -18,7 +19,7 @@
     "confidence": "Medium",
     "drivers": [
       "Real yields falling",
-      "USD strengthening"
+      "USD weakening"
     ]
   }
 }
