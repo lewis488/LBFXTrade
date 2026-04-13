@@ -1,14 +1,14 @@
 {
-  "updated_utc": "2026-04-13T13:01:27.641791",
+  "updated_utc": "2026-04-13T19:00:44.304922",
   "macro_risk": {
     "risk": true,
     "event": "CPIF YoY Final",
     "message": "High-impact risk: CPIF YoY Final within 24h"
   },
-  "risk_regime": "Risk-On",
+  "risk_regime": "Mixed",
   "us500": {
-    "bias": "Bullish",
-    "confidence": "High",
+    "bias": "Neutral",
+    "confidence": "Medium",
     "drivers": [
       "Real yields easing",
       "Volatility falling"
