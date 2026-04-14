@@ -1,22 +1,22 @@
 {
-  "updated_utc": "2026-04-13T19:00:44.304922",
+  "updated_utc": "2026-04-14T01:28:33.629827",
   "macro_risk": {
     "risk": true,
     "event": "CPIF YoY Final",
     "message": "High-impact risk: CPIF YoY Final within 24h"
   },
-  "risk_regime": "Mixed",
+  "risk_regime": "Risk-On",
   "us500": {
-    "bias": "Neutral",
-    "confidence": "Medium",
+    "bias": "Bullish",
+    "confidence": "High",
     "drivers": [
       "Real yields easing",
       "Volatility falling"
     ]
   },
   "gold": {
-    "bias": "Neutral",
-    "confidence": "Medium",
+    "bias": "Bullish",
+    "confidence": "High",
     "drivers": [
       "Real yields falling",
       "USD weakening"
