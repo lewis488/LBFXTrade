@@ -1,9 +1,8 @@
 {
-  "updated_utc": "2026-04-14T01:28:33.629827",
+  "updated_utc": "2026-04-14T07:17:52.591168",
   "macro_risk": {
-    "risk": true,
-    "event": "CPIF YoY Final",
-    "message": "High-impact risk: CPIF YoY Final within 24h"
+    "risk": false,
+    "message": "No high-impact macro risk in next 24h"
   },
   "risk_regime": "Risk-On",
   "us500": {
