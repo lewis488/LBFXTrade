@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-04-20T07:50:50.262674",
+  "updated_utc": "2026-04-20T13:05:55.227671",
   "macro_risk": {
     "risk": false,
     "message": "No high-impact macro risk in next 24h"
@@ -14,11 +14,11 @@
     ]
   },
   "gold": {
-    "bias": "Bullish",
-    "confidence": "High",
+    "bias": "Neutral",
+    "confidence": "Medium",
     "drivers": [
       "Real yields falling",
-      "USD weakening"
+      "USD strengthening"
     ]
   }
 }
