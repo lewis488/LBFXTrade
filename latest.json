@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-05-06T13:29:33.213796",
+  "updated_utc": "2026-05-06T19:21:25.222647",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
@@ -10,7 +10,7 @@
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
-      "Volatility elevated"
+      "Volatility falling"
     ]
   },
   "gold": {
