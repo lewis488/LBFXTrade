@@ -206,9 +206,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
   <div class="data-status-bar" id="data-status-bar">
     <div class="data-chip" id="chip-us500"><div class="chip-dot"></div> US500</div>
     <div class="data-chip" id="chip-gold"><div class="chip-dot"></div> GOLD</div>
-    <div class="data-chip" id="chip-dxy"><div class="chip-dot"></div> DXY</div>
-    <div class="data-chip" id="chip-us30"><div class="chip-dot"></div> US30</div>
-    <div class="data-chip" id="chip-nas100"><div class="chip-dot"></div> NAS100</div>
     <div class="data-chip" id="chip-ai"><div class="chip-dot"></div> AI ANALYSIS</div>
   </div>
 
@@ -303,94 +300,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
     <div class="levels-strip"><div class="level-box"><span class="level-box-label">RESISTANCE</span><span class="level-box-value res" id="res-gold">----</span></div><div class="level-box"><span class="level-box-label">SUPPORT</span><span class="level-box-value sup" id="sup-gold">----</span></div><div class="level-box"><span class="level-box-label">NEAR-TERM TARGET</span><span class="level-box-value tgt" id="tgt-gold">----</span></div></div>
   </div>
 
-  <div class="asset-divider"></div>
 
-  <!-- ═══ DXY ═══ -->
-  <div id="section-dxy">
-    <div class="asset-section-header">
-      <div class="asset-section-title">
-        <div class="asset-name-big" style="color:#a78bfa">DXY</div>
-        <div class="asset-sub">US DOLLAR INDEX &middot; FOREX</div>
-        <div class="asset-timeframe-badge">4H</div>
-      </div>
-      <div class="direction-chip pending" id="dir-dxy">PENDING</div>
-    </div>
-    <div class="tech-strip">
-      <div class="tech-box"><div class="tech-box-label">PRICE</div><div class="tech-box-value plain" id="t-price-dxy">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 50</div><div class="tech-box-value plain" id="t-ema50-dxy">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 100</div><div class="tech-box-value plain" id="t-ema100-dxy">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 200</div><div class="tech-box-value plain" id="t-ema200-dxy">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">RSI (14)</div><div class="tech-box-value plain" id="t-rsi-dxy">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">ATR (14)</div><div class="tech-box-value plain" id="t-atr-dxy">----</div></div>
-    </div>
-    <div class="conf-row"><span class="conf-label">DIRECTIONAL CONF.</span><div class="conf-track"><div class="conf-fill bull" id="cf-dxy"></div></div><span class="conf-pct" id="cpct-dxy" style="color:var(--muted)">--</span></div>
-    <div class="trio">
-      <div class="trio-card"><div class="trio-card-title">FLOW</div><div class="wave-wrap" id="wave-flow-dxy"></div><div class="status-label" id="flow-status-dxy" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track flow-track"><div class="slider-needle" id="flow-needle-dxy" style="left:50%"></div></div><div class="slider-labels"><span>THIN</span><span>HEALTHY</span><span>CROWDED</span></div></div><div class="card-summary" id="flow-summary-dxy" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="flow-bullets-dxy"><div class="bullet-item skeleton" style="height:13px;width:76%"></div><div class="bullet-item skeleton" style="height:13px;width:61%"></div><div class="bullet-item skeleton" style="height:13px;width:70%"></div></div></div>
-      <div class="trio-card"><div class="trio-card-title">BEARING</div><div class="wave-wrap" id="wave-bearing-dxy"></div><div class="status-label" id="bearing-status-dxy" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track"><div class="slider-needle" id="bearing-needle-dxy" style="left:50%"></div></div><div class="slider-labels"><span>BEARISH</span><span>NEUTRAL</span><span>BULLISH</span></div></div><div class="card-summary" id="bearing-summary-dxy" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="bearing-bullets-dxy"><div class="bullet-item skeleton" style="height:13px;width:72%"></div><div class="bullet-item skeleton" style="height:13px;width:57%"></div><div class="bullet-item skeleton" style="height:13px;width:80%"></div></div></div>
-      <div class="trio-card"><div class="trio-card-title">PULSE</div><div class="wave-wrap" id="wave-pulse-dxy"></div><div class="status-label" id="pulse-status-dxy" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track pulse-track"><div class="slider-needle" id="pulse-needle-dxy" style="left:50%"></div></div><div class="slider-labels"><span>QUIET</span><span>TRADABLE</span><span>WILD</span></div></div><div class="card-summary" id="pulse-summary-dxy" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="pulse-bullets-dxy"><div class="bullet-item skeleton" style="height:13px;width:66%"></div><div class="bullet-item skeleton" style="height:13px;width:81%"></div><div class="bullet-item skeleton" style="height:13px;width:59%"></div></div></div>
-    </div>
-    <div class="levels-strip"><div class="level-box"><span class="level-box-label">RESISTANCE</span><span class="level-box-value res" id="res-dxy">----</span></div><div class="level-box"><span class="level-box-label">SUPPORT</span><span class="level-box-value sup" id="sup-dxy">----</span></div><div class="level-box"><span class="level-box-label">NEAR-TERM TARGET</span><span class="level-box-value tgt" id="tgt-dxy">----</span></div></div>
-  </div>
-
-  <div class="asset-divider"></div>
-
-  <!-- ═══ US30 ═══ -->
-  <div id="section-us30">
-    <div class="asset-section-header">
-      <div class="asset-section-title">
-        <div class="asset-name-big" style="color:#38bdf8">US30</div>
-        <div class="asset-sub">DOW JONES &middot; EQUITIES</div>
-        <div class="asset-timeframe-badge">4H</div>
-      </div>
-      <div class="direction-chip pending" id="dir-us30">PENDING</div>
-    </div>
-    <div class="tech-strip">
-      <div class="tech-box"><div class="tech-box-label">PRICE</div><div class="tech-box-value plain" id="t-price-us30">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 50</div><div class="tech-box-value plain" id="t-ema50-us30">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 100</div><div class="tech-box-value plain" id="t-ema100-us30">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 200</div><div class="tech-box-value plain" id="t-ema200-us30">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">RSI (14)</div><div class="tech-box-value plain" id="t-rsi-us30">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">ATR (14)</div><div class="tech-box-value plain" id="t-atr-us30">----</div></div>
-    </div>
-    <div class="conf-row"><span class="conf-label">DIRECTIONAL CONF.</span><div class="conf-track"><div class="conf-fill bull" id="cf-us30"></div></div><span class="conf-pct" id="cpct-us30" style="color:var(--muted)">--</span></div>
-    <div class="trio">
-      <div class="trio-card"><div class="trio-card-title">FLOW</div><div class="wave-wrap" id="wave-flow-us30"></div><div class="status-label" id="flow-status-us30" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track flow-track"><div class="slider-needle" id="flow-needle-us30" style="left:50%"></div></div><div class="slider-labels"><span>THIN</span><span>HEALTHY</span><span>CROWDED</span></div></div><div class="card-summary" id="flow-summary-us30" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="flow-bullets-us30"><div class="bullet-item skeleton" style="height:13px;width:79%"></div><div class="bullet-item skeleton" style="height:13px;width:64%"></div><div class="bullet-item skeleton" style="height:13px;width:71%"></div></div></div>
-      <div class="trio-card"><div class="trio-card-title">BEARING</div><div class="wave-wrap" id="wave-bearing-us30"></div><div class="status-label" id="bearing-status-us30" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track"><div class="slider-needle" id="bearing-needle-us30" style="left:50%"></div></div><div class="slider-labels"><span>BEARISH</span><span>NEUTRAL</span><span>BULLISH</span></div></div><div class="card-summary" id="bearing-summary-us30" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="bearing-bullets-us30"><div class="bullet-item skeleton" style="height:13px;width:73%"></div><div class="bullet-item skeleton" style="height:13px;width:58%"></div><div class="bullet-item skeleton" style="height:13px;width:79%"></div></div></div>
-      <div class="trio-card"><div class="trio-card-title">PULSE</div><div class="wave-wrap" id="wave-pulse-us30"></div><div class="status-label" id="pulse-status-us30" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track pulse-track"><div class="slider-needle" id="pulse-needle-us30" style="left:50%"></div></div><div class="slider-labels"><span>QUIET</span><span>TRADABLE</span><span>WILD</span></div></div><div class="card-summary" id="pulse-summary-us30" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="pulse-bullets-us30"><div class="bullet-item skeleton" style="height:13px;width:69%"></div><div class="bullet-item skeleton" style="height:13px;width:84%"></div><div class="bullet-item skeleton" style="height:13px;width:62%"></div></div></div>
-    </div>
-    <div class="levels-strip"><div class="level-box"><span class="level-box-label">RESISTANCE</span><span class="level-box-value res" id="res-us30">----</span></div><div class="level-box"><span class="level-box-label">SUPPORT</span><span class="level-box-value sup" id="sup-us30">----</span></div><div class="level-box"><span class="level-box-label">NEAR-TERM TARGET</span><span class="level-box-value tgt" id="tgt-us30">----</span></div></div>
-  </div>
-
-  <div class="asset-divider"></div>
-
-  <!-- ═══ NAS100 ═══ -->
-  <div id="section-nas100">
-    <div class="asset-section-header">
-      <div class="asset-section-title">
-        <div class="asset-name-big" style="color:#fb923c">NAS100</div>
-        <div class="asset-sub">NASDAQ 100 &middot; EQUITIES</div>
-        <div class="asset-timeframe-badge">4H</div>
-      </div>
-      <div class="direction-chip pending" id="dir-nas100">PENDING</div>
-    </div>
-    <div class="tech-strip">
-      <div class="tech-box"><div class="tech-box-label">PRICE</div><div class="tech-box-value plain" id="t-price-nas100">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 50</div><div class="tech-box-value plain" id="t-ema50-nas100">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 100</div><div class="tech-box-value plain" id="t-ema100-nas100">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">EMA 200</div><div class="tech-box-value plain" id="t-ema200-nas100">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">RSI (14)</div><div class="tech-box-value plain" id="t-rsi-nas100">----</div></div>
-      <div class="tech-box"><div class="tech-box-label">ATR (14)</div><div class="tech-box-value plain" id="t-atr-nas100">----</div></div>
-    </div>
-    <div class="conf-row"><span class="conf-label">DIRECTIONAL CONF.</span><div class="conf-track"><div class="conf-fill bull" id="cf-nas100"></div></div><span class="conf-pct" id="cpct-nas100" style="color:var(--muted)">--</span></div>
-    <div class="trio">
-      <div class="trio-card"><div class="trio-card-title">FLOW</div><div class="wave-wrap" id="wave-flow-nas100"></div><div class="status-label" id="flow-status-nas100" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track flow-track"><div class="slider-needle" id="flow-needle-nas100" style="left:50%"></div></div><div class="slider-labels"><span>THIN</span><span>HEALTHY</span><span>CROWDED</span></div></div><div class="card-summary" id="flow-summary-nas100" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="flow-bullets-nas100"><div class="bullet-item skeleton" style="height:13px;width:77%"></div><div class="bullet-item skeleton" style="height:13px;width:62%"></div><div class="bullet-item skeleton" style="height:13px;width:69%"></div></div></div>
-      <div class="trio-card"><div class="trio-card-title">BEARING</div><div class="wave-wrap" id="wave-bearing-nas100"></div><div class="status-label" id="bearing-status-nas100" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track"><div class="slider-needle" id="bearing-needle-nas100" style="left:50%"></div></div><div class="slider-labels"><span>BEARISH</span><span>NEUTRAL</span><span>BULLISH</span></div></div><div class="card-summary" id="bearing-summary-nas100" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="bearing-bullets-nas100"><div class="bullet-item skeleton" style="height:13px;width:71%"></div><div class="bullet-item skeleton" style="height:13px;width:56%"></div><div class="bullet-item skeleton" style="height:13px;width:78%"></div></div></div>
-      <div class="trio-card"><div class="trio-card-title">PULSE</div><div class="wave-wrap" id="wave-pulse-nas100"></div><div class="status-label" id="pulse-status-nas100" style="color:var(--muted)">&#8212;</div><div class="slider-wrap"><div class="slider-track pulse-track"><div class="slider-needle" id="pulse-needle-nas100" style="left:50%"></div></div><div class="slider-labels"><span>QUIET</span><span>TRADABLE</span><span>WILD</span></div></div><div class="card-summary" id="pulse-summary-nas100" style="color:var(--muted)">Awaiting...</div><div class="bullet-list" id="pulse-bullets-nas100"><div class="bullet-item skeleton" style="height:13px;width:67%"></div><div class="bullet-item skeleton" style="height:13px;width:82%"></div><div class="bullet-item skeleton" style="height:13px;width:60%"></div></div></div>
-    </div>
-    <div class="levels-strip"><div class="level-box"><span class="level-box-label">RESISTANCE</span><span class="level-box-value res" id="res-nas100">----</span></div><div class="level-box"><span class="level-box-label">SUPPORT</span><span class="level-box-value sup" id="sup-nas100">----</span></div><div class="level-box"><span class="level-box-label">NEAR-TERM TARGET</span><span class="level-box-value tgt" id="tgt-nas100">----</span></div></div>
-  </div>
-
-</div><!-- /page -->
+  </div><!-- /page -->
 
 <script>
 /* ============================================================
@@ -409,11 +320,8 @@ const ANTHROPIC_KEY = 'sk-ant-api03-0eY2LzGu-LbMKPrKkqcxjtGhyfYqPxtLGin1lBbLFj7O
 
 /* ASSET CONFIG — symbol, AV fetch params, display name */
 const ASSETS = {
-  us500:  { avSymbol:'SPY',  isForex:false, name:'US500 (S&P 500 via SPY)',   tf:'4H daily proxy' },
-  gold:   { avSymbol:'XAUUSD', isForex:true,  name:'Gold XAU/USD',            tf:'4H daily proxy' },
-  dxy:    { avSymbol:'UUP',  isForex:false, name:'DXY (via UUP Dollar ETF)',  tf:'4H daily proxy' },
-  us30:   { avSymbol:'DIA',  isForex:false, name:'US30 (via DIA Dow ETF)',    tf:'4H daily proxy' },
-  nas100: { avSymbol:'QQQ',  isForex:false, name:'NAS100 (via QQQ ETF)',      tf:'4H daily proxy' },
+  us500: { avSymbol:'SPY',    isForex:false, name:'US500 (S&P 500 via SPY)', tf:'4H daily proxy' },
+  gold:  { avSymbol:'XAUUSD', isForex:true,  name:'Gold XAU/USD',            tf:'4H daily proxy' },
 };
 
 /* ── CLOCK ── */
@@ -815,7 +723,7 @@ function resetAsset(id){
 
 /* ── MAIN ── */
 async function runAnalysis(){
-  if(AV_KEY==='IK7D6GOQT6J81JEM'||ANTHROPIC_KEY==='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'){
+  if(AV_KEY==='PASTE_YOUR_ALPHA_VANTAGE_KEY_HERE'||ANTHROPIC_KEY==='PASTE_YOUR_ANTHROPIC_KEY_HERE'){
     alert('Paste both API keys at the top of the script before running.');
     return;
   }
@@ -861,8 +769,14 @@ async function runAnalysis(){
       console.error(id,e);
       setChip('chip-'+id,'error',id.toUpperCase()+': ERROR');
     }
-    // 1.3s delay between AV requests on free tier
-    if(i<assetIds.length-1) await new Promise(r=>setTimeout(r,1300));
+    // 15s delay between AV requests — free tier limit is 5 req/min
+    if(i<assetIds.length-1){
+      const nextId=assetIds[i+1];
+      for(let s=15;s>0;s--){
+        setChip('chip-'+nextId,'loading',nextId.toUpperCase()+': READY IN '+s+'s...');
+        await new Promise(r=>setTimeout(r,1000));
+      }
+    }
   }
 
   /* ── STEP 2: AI analysis — all assets in parallel ── */
