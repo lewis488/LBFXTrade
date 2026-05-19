@@ -320,7 +320,7 @@ const ANTHROPIC_KEY = 'sk-ant-api03-36xDcpPoGbCH-Xj6peJbKLpaWCo64HpNEHS6IH0AG4kH
 
 /* ASSET CONFIG — symbol, AV fetch params, display name */
 const ASSETS = {
-  us500: { avSymbol:'SPY', avSymbolAlt:'^GSPC', isForex:false, name:'US500 (S&P 500)', tf:'4H daily proxy' },
+  us500: { avSymbol:'VOO', avSymbolAlt:'SPY', isForex:false, name:'US500 (S&P 500)', tf:'4H daily proxy' },
   gold:  { avSymbol:'XAUUSD', avSymbolAlt:'GLD', isForex:true,  name:'Gold XAU/USD',   tf:'4H daily proxy' },
 };
 
@@ -759,8 +759,10 @@ async function runAnalysis(){
         // Try alternate symbol
         if(ASSETS[id].avSymbolAlt){
           console.log(id+': primary failed, trying '+ASSETS[id].avSymbolAlt);
-          setChip('chip-'+id,'loading',id.toUpperCase()+': TRYING FALLBACK...');
-          await new Promise(r=>setTimeout(r,2000));
+          for(let s=16;s>0;s--){
+            setChip('chip-'+id,'loading',id.toUpperCase()+': FALLBACK IN '+s+'s...');
+            await new Promise(r=>setTimeout(r,1000));
+          }
           candles=await fetchOHLCV(id, true);
           usedSymbol=ASSETS[id].avSymbolAlt;
         } else throw e1;
