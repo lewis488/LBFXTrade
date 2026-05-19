@@ -307,12 +307,12 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
 /* ============================================================
    !! STEP 1 — ALPHA VANTAGE KEY (free at alphavantage.co) !!
    ============================================================ */
-const AV_KEY = 'IK7D6GOQT6J81JEM';
+const AV_KEY = 'R0G89120GQTHUFRG';
 
 /* ============================================================
    !! STEP 2 — ANTHROPIC KEY (console.anthropic.com) !!
    ============================================================ */
-const ANTHROPIC_KEY = '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';
+const ANTHROPIC_KEY = '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';
 
 /* ============================================================
    NO CHANGES NEEDED BELOW THIS LINE
@@ -320,8 +320,8 @@ const ANTHROPIC_KEY = 'sk-ant-api03-0eY2LzGu-LbMKPrKkqcxjtGhyfYqPxtLGin1lBbLFj7O
 
 /* ASSET CONFIG — symbol, AV fetch params, display name */
 const ASSETS = {
-  us500: { avSymbol:'SPY',    isForex:false, name:'US500 (S&P 500 via SPY)', tf:'4H daily proxy' },
-  gold:  { avSymbol:'XAUUSD', isForex:true,  name:'Gold XAU/USD',            tf:'4H daily proxy' },
+  us500: { avSymbol:'SPY', avSymbolAlt:'^GSPC', isForex:false, name:'US500 (S&P 500)', tf:'4H daily proxy' },
+  gold:  { avSymbol:'XAUUSD', avSymbolAlt:'GLD', isForex:true,  name:'Gold XAU/USD',   tf:'4H daily proxy' },
 };
 
 /* ── CLOCK ── */
@@ -516,22 +516,25 @@ function setChip(id,state,text){
 }
 
 /* ── ALPHA VANTAGE FETCH (daily candles — best coverage on free tier) ── */
-async function fetchOHLCV(assetId){
+async function fetchOHLCV(assetId, useAlt=false){
   const cfg=ASSETS[assetId];
+  const symbol = useAlt && cfg.avSymbolAlt ? cfg.avSymbolAlt : cfg.avSymbol;
+  const isForexNow = useAlt && cfg.avSymbolAlt && !cfg.isForex ? false : cfg.isForex;
   let url;
-  if(cfg.isForex){
+  if(isForexNow && symbol==='XAUUSD'){
     url=`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=XAU&to_symbol=USD&outputsize=full&apikey=${AV_KEY}`;
   } else {
-    url=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${cfg.avSymbol}&outputsize=full&apikey=${AV_KEY}`;
+    url=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=full&apikey=${AV_KEY}`;
   }
   const resp=await fetch(url);
   const data=await resp.json();
-  const key=cfg.isForex?'Time Series FX (Daily)':'Time Series (Daily)';
-  const series=data[key];
+  // Try both series key formats
+  const series=data['Time Series (Daily)'] || data['Time Series FX (Daily)'];
   if(!series){
     if(data['Note']||data['Information']) throw new Error('Rate limit — wait 60s');
-    throw new Error('No data — check AV key');
+    throw new Error(`No data for ${symbol} — trying fallback`);
   }
+  const isVolumeAvail = !!data['Time Series (Daily)'];
   return Object.entries(series)
     .sort((a,b)=>a[0].localeCompare(b[0]))
     .slice(-250)
@@ -541,7 +544,7 @@ async function fetchOHLCV(assetId){
       high:parseFloat(v['2. high']),
       low:parseFloat(v['3. low']),
       close:parseFloat(v['4. close']),
-      volume:cfg.isForex?0:parseFloat(v['5. volume']||0)
+      volume:isVolumeAvail?parseFloat(v['5. volume']||0):0
     }));
 }
 
@@ -749,25 +752,25 @@ async function runAnalysis(){
     setChip('chip-'+id,'loading',id.toUpperCase()+': FETCHING...');
     try{
       let candles=null;
+      let usedSymbol=ASSETS[id].avSymbol;
       try{
-        candles=await fetchOHLCV(id);
+        candles=await fetchOHLCV(id, false);
       } catch(e1){
-        // Gold fallback: try GLD ETF
-        if(id==='gold'){
-          const goldFallback={...ASSETS.gold,avSymbol:'GLD',isForex:false};
-          const origAsset=ASSETS.gold;
-          ASSETS.gold=goldFallback;
-          candles=await fetchOHLCV('gold');
-          ASSETS.gold=origAsset;
-          setChip('chip-gold','loaded','GOLD (GLD ETF): OK');
+        // Try alternate symbol
+        if(ASSETS[id].avSymbolAlt){
+          console.log(id+': primary failed, trying '+ASSETS[id].avSymbolAlt);
+          setChip('chip-'+id,'loading',id.toUpperCase()+': TRYING FALLBACK...');
+          await new Promise(r=>setTimeout(r,2000));
+          candles=await fetchOHLCV(id, true);
+          usedSymbol=ASSETS[id].avSymbolAlt;
         } else throw e1;
       }
       technicalsMap[id]=computeTechnicals(candles);
       renderTechStrip(id,technicalsMap[id]);
-      setChip('chip-'+id,'loaded',id.toUpperCase()+': '+candles.length+' BARS');
+      setChip('chip-'+id,'loaded',id.toUpperCase()+' ('+usedSymbol+'): '+candles.length+' BARS');
     } catch(e){
       console.error(id,e);
-      setChip('chip-'+id,'error',id.toUpperCase()+': ERROR');
+      setChip('chip-'+id,'error',id.toUpperCase()+': '+e.message.substring(0,30));
     }
     // 15s delay between AV requests — free tier limit is 5 req/min
     if(i<assetIds.length-1){
