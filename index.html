@@ -568,7 +568,9 @@ function renderTechStrip(id,t){
   document.getElementById(`t-atr-${id}`).className='tech-box-value plain';
 }
 
-/* ── CLAUDE API ── */
+/* ── CLAUDE API — routed via Cloudflare Worker proxy (handles CORS + key security) ── */
+const WORKER_URL = 'https://billowing-salad-b685.lewis-c71.workers.dev';
+
 async function callClaude(prompt,useSearch=false){
   const body={
     model:'claude-sonnet-4-20250514',
@@ -576,19 +578,14 @@ async function callClaude(prompt,useSearch=false){
     messages:[{role:'user',content:prompt}]
   };
   if(useSearch) body.tools=[{type:'web_search_20250305',name:'web_search'}];
-  const r=await fetch('https://api.anthropic.com/v1/messages',{
+  const r=await fetch(WORKER_URL,{
     method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key':ANTHROPIC_KEY,
-      'anthropic-version':'2023-06-01',
-      'anthropic-beta':'interstitial-bidding-2025-03-21'
-    },
+    headers:{'Content-Type':'application/json'},
     body:JSON.stringify(body)
   });
-  if(!r.ok){const e=await r.text();throw new Error(`Claude ${r.status}: ${e}`);}
+  if(!r.ok){const e=await r.text();throw new Error(`Worker ${r.status}: ${e}`);}
   const data=await r.json();
-  if(!data.content) throw new Error('No content');
+  if(!data.content) throw new Error('No content: '+JSON.stringify(data));
   return data.content.filter(b=>b.type==='text').map(b=>b.text).join('\n');
 }
 
