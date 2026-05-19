@@ -522,9 +522,9 @@ async function fetchOHLCV(assetId, useAlt=false){
   const isForexNow = useAlt && cfg.avSymbolAlt && !cfg.isForex ? false : cfg.isForex;
   let url;
   if(isForexNow && symbol==='XAUUSD'){
-    url=`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=XAU&to_symbol=USD&outputsize=full&apikey=${AV_KEY}`;
+    url=`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=XAU&to_symbol=USD&outputsize=compact&apikey=${AV_KEY}`;
   } else {
-    url=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=full&apikey=${AV_KEY}`;
+    url=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=compact&apikey=${AV_KEY}`;
   }
   const resp=await fetch(url);
   const data=await resp.json();
@@ -537,7 +537,7 @@ async function fetchOHLCV(assetId, useAlt=false){
   const isVolumeAvail = !!data['Time Series (Daily)'];
   return Object.entries(series)
     .sort((a,b)=>a[0].localeCompare(b[0]))
-    .slice(-250)
+    .slice(-100)
     .map(([date,v])=>({
       date,
       open:parseFloat(v['1. open']),
