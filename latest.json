@@ -1,10 +1,10 @@
 {
-  "updated_utc": "2026-05-26T09:34:58.472287",
+  "updated_utc": "2026-05-26T14:41:44.980045",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
   },
-  "risk_regime": "Risk-Off",
+  "risk_regime": "Mixed",
   "us500": {
     "bias": "Neutral",
     "confidence": "Medium",
