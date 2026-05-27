@@ -1,12 +1,12 @@
 {
-  "updated_utc": "2026-05-26T19:55:10.951467",
+  "updated_utc": "2026-05-27T02:30:42.937859",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
   },
-  "risk_regime": "Mixed",
+  "risk_regime": "Risk-On",
   "us500": {
-    "bias": "Neutral",
+    "bias": "Bullish",
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
@@ -14,8 +14,8 @@
     ]
   },
   "gold": {
-    "bias": "Bearish",
-    "confidence": "High",
+    "bias": "Neutral",
+    "confidence": "Medium",
     "drivers": [
       "Real yields rising",
       "USD strengthening"
