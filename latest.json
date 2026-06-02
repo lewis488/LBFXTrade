@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-06-01T21:20:53.843622",
+  "updated_utc": "2026-06-02T02:38:51.692610",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
@@ -18,7 +18,7 @@
     "confidence": "Medium",
     "drivers": [
       "Real yields falling",
-      "USD strengthening"
+      "USD weakening"
     ]
   }
 }
