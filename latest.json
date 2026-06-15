@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-06-15T16:56:11.045140",
+  "updated_utc": "2026-06-15T20:44:50.670624",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
@@ -9,16 +9,16 @@
     "bias": "Bullish",
     "confidence": "High",
     "drivers": [
-      "Real yields rising",
+      "Real yields easing",
       "Volatility falling"
     ]
   },
   "gold": {
-    "bias": "Bearish",
+    "bias": "Neutral",
     "confidence": "Medium",
     "drivers": [
-      "Real yields rising",
-      "USD strengthening"
+      "Real yields falling",
+      "USD weakening"
     ]
   }
 }
