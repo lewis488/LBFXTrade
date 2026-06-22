@@ -1,10 +1,10 @@
 {
-  "updated_utc": "2026-06-22T16:27:22.954904",
+  "updated_utc": "2026-06-22T20:33:24.591536",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
   },
-  "risk_regime": "Risk-On",
+  "risk_regime": "Mixed",
   "us500": {
     "bias": "Neutral",
     "confidence": "Medium",
@@ -18,7 +18,7 @@
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
-      "USD weakening"
+      "USD strengthening"
     ]
   }
 }
