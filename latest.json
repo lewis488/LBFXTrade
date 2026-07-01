@@ -1,16 +1,16 @@
 {
-  "updated_utc": "2026-07-01T09:28:24.068739",
+  "updated_utc": "2026-07-01T14:06:51.684042",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
   },
-  "risk_regime": "Mixed",
+  "risk_regime": "Risk-On",
   "us500": {
-    "bias": "Neutral",
-    "confidence": "Medium",
+    "bias": "Bullish",
+    "confidence": "High",
     "drivers": [
       "Real yields easing",
-      "Volatility elevated"
+      "Volatility falling"
     ]
   },
   "gold": {
