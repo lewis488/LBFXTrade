@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-07-02T19:08:23.180228",
+  "updated_utc": "2026-07-03T01:56:38.874559",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
@@ -7,9 +7,9 @@
   "risk_regime": "Risk-On",
   "us500": {
     "bias": "Bullish",
-    "confidence": "High",
+    "confidence": "Medium",
     "drivers": [
-      "Real yields easing",
+      "Real yields rising",
       "Volatility falling"
     ]
   },
@@ -17,7 +17,7 @@
     "bias": "Neutral",
     "confidence": "Medium",
     "drivers": [
-      "Real yields falling",
+      "Real yields rising",
       "USD strengthening"
     ]
   }
