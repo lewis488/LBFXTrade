@@ -342,11 +342,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
     </div>
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
       <span class="last-run" id="last-run">PRESS RUN ANALYSIS TO BEGIN</span>
+      <button class="test-btn" onclick="testWorker()" style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;background:var(--warn);color:#000;border:none;padding:10px 20px;cursor:pointer;margin-right:8px;">TEST WORKER</button>
       <button class="run-btn" id="runBtn" onclick="runAnalysis()">
         <span id="run-icon">&#9654;</span> RUN ANALYSIS
       </button>
     </div>
   </div>
+
+  <div id="test-output" style="display:none;background:#1a1f2e;border:1px solid rgba(255,255,255,0.14);padding:12px 16px;font-family:monospace;font-size:11px;color:#dce4f0;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;"></div>
 
   <!-- STATUS CHIPS -->
   <div class="data-status-bar" id="data-status-bar">
@@ -738,10 +741,15 @@ async function callClaude(prompt,useSearch=false){
   const body={model:'claude-sonnet-4-5',max_tokens:8000,messages:[{role:'user',content:prompt}]};
   if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
   const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok){const e=await r.text();throw new Error(`Worker ${r.status}: ${e}`);}
-  const data=await r.json();
-  if(!data.content)throw new Error('No content');
-  return data.content.filter(b=>b.type==='text').map(b=>b.text).join('\n');
+  const rawText=await r.text();
+  console.log('Worker status:',r.status,'body:',rawText.substring(0,300));
+  if(!r.ok){throw new Error('Worker '+r.status+': '+rawText);}
+  let data;
+  try{data=JSON.parse(rawText);}catch(e){throw new Error('Bad JSON: '+rawText.substring(0,100));}
+  if(data.error){throw new Error('API error: '+data.error.type+' '+data.error.message);}
+  if(!data.content){throw new Error('No content. Keys: '+Object.keys(data).join(','));}
+  return data.content.filter(b=>b.type==='text').map(b=>b.text).join('
+');
 }
 
 function safeJSON(raw){
@@ -962,6 +970,24 @@ async function runAnalysis(){
   }
 
   btn.disabled=false;icon.className='';icon.textContent='\u25B6';
+}
+
+// ── TEST WORKER ──────────────────────────────────────────────────
+async function testWorker(){
+  const out = document.getElementById('test-output');
+  out.style.display = 'block';
+  out.textContent = 'Calling Worker...';
+  try {
+    const body = {model:'claude-sonnet-4-5', max_tokens:100, messages:[{role:'user',content:'Say OK in one word'}]};
+    const r = await fetch(WORKER_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    const text = await r.text();
+    out.textContent = 'Status: ' + r.status + '
+
+Response:
+' + text.substring(0,800);
+  } catch(e) {
+    out.textContent = 'ERROR: ' + e.message;
+  }
 }
 
 // ── INIT ─────────────────────────────────────────────────────────
