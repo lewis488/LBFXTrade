@@ -735,7 +735,7 @@ function renderNews(articles){
 
 // ── CLAUDE API ───────────────────────────────────────────────────
 async function callClaude(prompt,useSearch=false){
-  const body={model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]};
+  const body={model:'claude-sonnet-4-5',max_tokens:8000,messages:[{role:'user',content:prompt}]};
   if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
   const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
   if(!r.ok){const e=await r.text();throw new Error(`Worker ${r.status}: ${e}`);}
