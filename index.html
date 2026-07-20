@@ -634,10 +634,10 @@ async function fetchAllPrices(){
   try{
     const symbols=[
       {id:'gold', sym:'OANDA:XAU_USD'},
-      {id:'us500',sym:'OANDA:SPX500_USD'},
-      {id:'nas',  sym:'OANDA:NAS100_USD'},
-      {id:'dxy',  sym:'OANDA:USB500_USD'},
-      {id:'vix',  sym:'CBOE:VIX'},
+      {id:'us500',sym:'SPY'},
+      {id:'nas',  sym:'QQQ'},
+      {id:'dxy',  sym:'UUP'},
+      {id:'vix',  sym:'VIXY'},
     ];
     const results=await Promise.allSettled(symbols.map(s=>fetchQuote(s.sym)));
     results.forEach((r,i)=>{
