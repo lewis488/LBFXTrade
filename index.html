@@ -748,8 +748,7 @@ async function callClaude(prompt,useSearch=false){
   try{data=JSON.parse(rawText);}catch(e){throw new Error('Bad JSON: '+rawText.substring(0,100));}
   if(data.error){throw new Error('API error: '+data.error.type+' '+data.error.message);}
   if(!data.content){throw new Error('No content. Keys: '+Object.keys(data).join(','));}
-  return data.content.filter(b=>b.type==='text').map(b=>b.text).join('
-');
+  return data.content.filter(b=>b.type==='text').map(b=>b.text).join('\n');
 }
 
 function safeJSON(raw){
