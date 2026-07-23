@@ -1,12 +1,12 @@
 {
-  "updated_utc": "2026-07-23T13:23:19.052388",
+  "updated_utc": "2026-07-23T18:58:09.406368",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
   },
-  "risk_regime": "Mixed",
+  "risk_regime": "Risk-Off",
   "us500": {
-    "bias": "Neutral",
+    "bias": "Bearish",
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
