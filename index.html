@@ -1309,10 +1309,13 @@ function setTickerPrice(id,price,chg,pct){
   if(cc){cc.textContent=sign+fmtPrice(pct,2)+'%'; cc.className='card-change '+cls;}
 }
 function updateCapitalFlow(){
-  ['gold','us500','nas','dxy','vix'].forEach(id=>{
+  ['gold','us500','nas','dxy','vix','eurusd','gbpusd','usdchf'].forEach(id=>{
     const p=state.prices[id]; if(!p) return;
     const pct=p.pct, sign=pct>=0?'+':'';
-    const cls=pct>0?'pos':'neg', barW=Math.min(Math.abs(pct)*8,50)+'%';
+    const cls=pct>0?'pos':'neg';
+    // Forex pairs have smaller % moves - scale bar width accordingly
+    const isFx=(id==='eurusd'||id==='gbpusd'||id==='usdchf');
+    const barW=Math.min(Math.abs(pct)*(isFx?400:8),50)+'%';
     const bar=document.getElementById('cfb-'+id), val=document.getElementById('cfv-'+id);
     if(bar){bar.className='cf-bar-fill '+cls; bar.style.width=barW;}
     if(val){val.textContent=sign+pct.toFixed(2)+'%'; val.className='cf-val '+(pct>0?'pos':pct<0?'neg':'flat');}
