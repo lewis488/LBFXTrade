@@ -284,6 +284,63 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
   .macro-divider{display:none;}
   .gauge-wrap{min-width:unset;}
 }
+
+/* ── LOGIN PAGE ─────────────────────────────────────────────────── */
+.login-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:0;
+}
+.login-overlay.hidden{display:none;}
+.login-box{
+  background:var(--surface-1);border:1px solid var(--border);
+  padding:48px 40px;width:min(420px,90vw);display:flex;
+  flex-direction:column;gap:24px;position:relative;overflow:hidden;
+}
+.login-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--gold-col));
+}
+.login-logo{
+  display:flex;align-items:center;gap:12px;margin-bottom:8px;
+}
+.login-logo-mark{
+  width:36px;height:36px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;color:#fff;flex-shrink:0;
+}
+.login-logo-text{font-size:20px;font-weight:800;letter-spacing:0.04em;}
+.login-logo-sub{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.16em;margin-top:2px;}
+.login-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.18em;
+  color:var(--muted);text-transform:uppercase;margin-bottom:6px;
+}
+.login-input{
+  width:100%;background:var(--bg);border:1px solid var(--border-bright);
+  color:var(--text);font-family:var(--mono);font-size:14px;
+  padding:12px 14px;outline:none;transition:border-color 0.2s;
+}
+.login-input:focus{border-color:var(--accent);}
+.login-input::placeholder{color:var(--dim);}
+.login-btn{
+  width:100%;background:var(--accent);color:#fff;border:none;
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  letter-spacing:0.16em;text-transform:uppercase;padding:14px;
+  cursor:pointer;transition:opacity 0.2s;margin-top:4px;
+}
+.login-btn:hover{opacity:0.88;}
+.login-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.login-error{
+  font-family:var(--mono);font-size:11px;color:var(--bear);
+  text-align:center;display:none;
+  background:rgba(232,64,64,0.08);border:1px solid rgba(232,64,64,0.2);
+  padding:8px 12px;
+}
+.login-error.visible{display:block;}
+.login-footer{
+  font-family:var(--mono);font-size:9px;color:var(--dim);
+  text-align:center;letter-spacing:0.1em;
+}
 </style>
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 </head>
@@ -423,7 +480,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
     </div>
     <div class="macro-divider"></div>
     <div class="macro-text-block">
-      <div class="macro-section-label">AI MACRO OVERVIEW · CURRENT SESSION</div>
+      <div class="macro-section-label">AI 4H BIAS · CURRENT SESSION</div>
       <div class="macro-narrative-text" id="macro-narr">Run analysis to generate macro overview...</div>
       <div class="macro-themes" id="macro-themes"></div>
     </div>
@@ -814,19 +871,20 @@ function fmt(n,dp){
 
 // ── ALPHA VANTAGE OHLCV ──────────────────────────────────────────
 const AV_CONFIGS = {
-  us500: { func:'TIME_SERIES_DAILY', symbol:'SPY', seriesKey:'Time Series (Daily)', isForex:false },
-  nas:   { func:'TIME_SERIES_DAILY', symbol:'QQQ', seriesKey:'Time Series (Daily)', isForex:false },
+  us500: { func:'TIME_SERIES_INTRADAY', symbol:'SPY', interval:'60min', seriesKey:'Time Series (60min)', isForex:false },
+  nas:   { func:'TIME_SERIES_INTRADAY', symbol:'QQQ', interval:'60min', seriesKey:'Time Series (60min)', isForex:false },
 };
 
-// Twelve Data forex OHLCV symbols
+// Twelve Data OHLCV symbols - forex + Gold on 4H
 const TD_OHLCV = {
+  gold:   'XAU/USD',
   eurusd: 'EUR/USD',
   gbpusd: 'GBP/USD',
   usdchf: 'USD/CHF',
 };
 
 async function fetchTDOHLCV(tdSymbol){
-  const url = 'https://api.twelvedata.com/time_series?symbol='+encodeURIComponent(tdSymbol)+'&interval=1day&outputsize=100&apikey='+TD_KEY;
+  const url = 'https://api.twelvedata.com/time_series?symbol='+encodeURIComponent(tdSymbol)+'&interval=4h&outputsize=100&apikey='+TD_KEY;
   const r = await fetch(url);
   const data = await r.json();
   if(data.status==='error') throw new Error(data.message||'TD OHLCV error for '+tdSymbol);
@@ -909,7 +967,9 @@ async function fetchOHLCV(id){
   if(cfg.isForex){
     url='https://www.alphavantage.co/query?function='+cfg.func+'&from_symbol='+cfg.from+'&to_symbol='+cfg.to+'&outputsize=compact&apikey='+AV_KEY;
   } else {
-    url='https://www.alphavantage.co/query?function='+cfg.func+'&symbol='+cfg.symbol+'&outputsize=compact&apikey='+AV_KEY;
+    // Intraday needs interval param
+    const intervalParam = cfg.interval ? '&interval='+cfg.interval : '';
+    url='https://www.alphavantage.co/query?function='+cfg.func+'&symbol='+cfg.symbol+intervalParam+'&outputsize=compact&apikey='+AV_KEY;
   }
   const r=await fetch(url);
   const data=await r.json();
@@ -1057,12 +1117,12 @@ function computeTechnicals(candles){
   const mom5=((price-closes[closes.length-6])/closes[closes.length-6]*100).toFixed(2);
   const mom20=((price-closes[closes.length-21])/closes[closes.length-21]*100).toFixed(2);
   let emaStack;
-  if(price>ema50&&ema50>ema100&&ema100>ema200) emaStack='FULL BULL STACK - above EMA50/100/200';
-  else if(price<ema50&&ema50<ema100&&ema100<ema200) emaStack='FULL BEAR STACK - below EMA50/100/200';
-  else if(price>ema50&&ema50>ema100) emaStack='BULLISH - above EMA50 and 100';
-  else if(price<ema50&&ema50<ema100) emaStack='BEARISH - below EMA50 and 100';
-  else if(price>ema200) emaStack='MIXED - above EMA200 only';
-  else emaStack='MIXED - below EMA200';
+  if(price>ema50&&ema50>ema100&&ema100>ema200) emaStack='FULL BULL STACK (4H) - price above EMA50/100/200, strong uptrend';
+  else if(price<ema50&&ema50<ema100&&ema100<ema200) emaStack='FULL BEAR STACK (4H) - price below EMA50/100/200, strong downtrend';
+  else if(price>ema50&&ema50>ema100) emaStack='BULLISH (4H) - above EMA50 and 100, watching 200';
+  else if(price<ema50&&ema50<ema100) emaStack='BEARISH (4H) - below EMA50 and 100, watching 200';
+  else if(price>ema200) emaStack='MIXED (4H) - above EMA200 only, caution';
+  else emaStack='MIXED (4H) - below EMA200, caution';
   return {price,ema20,ema50,ema100,ema200,rsi,atr,atrPct,resistance,support,volRatio,mom5,mom20,emaStack};
 }
 
@@ -1097,8 +1157,9 @@ function applyCandles(id, candles){
 }
 
 async function fetchAllTechnicals(){
-  // Fetch gold price separately (no OHLCV - use live price only)
+  // Fetch gold live price first (for ticker display)
   await fetchGoldPrice();
+  // Gold OHLCV comes from TD_OHLCV below alongside forex pairs
   const ids=['us500','nas'];
   // Also fetch forex OHLCV from Twelve Data (in background after AV fetches)
   const fetchForex = async () => {
@@ -1180,8 +1241,16 @@ async function fetchAllTechnicals(){
       state.candles[id] = candles;
       technicalsStore[id] = computeTechnicals(candles);
       technicalsStore[id].volumeProfile = computeVolumeProfile(candles, 20);
+      // For gold - update price display from candles if live price not yet set
+      if(id==='gold' && (!state.prices['gold']||!state.prices['gold'].price)){
+        const t = technicalsStore['gold'];
+        const tp = document.getElementById('tick-gold');
+        const cp = document.getElementById('card-price-gold');
+        if(tp) tp.textContent = fmtPrice(t.price);
+        if(cp) cp.textContent = fmtPrice(t.price);
+      }
       setChip(id,'loaded',id.toUpperCase()+': '+candles.length+' BARS');
-      console.log(id+' TD OHLCV: '+candles.length+' bars, last close: '+candles[candles.length-1].close);
+      console.log(id+' TD OHLCV: '+candles.length+' bars');
     } catch(e){
       console.warn('TD OHLCV failed for '+id+':',e.message);
       setChip(id,'error',id.toUpperCase()+': OHLCV FAILED');
@@ -1206,7 +1275,7 @@ function techContext(id){
   const dp = (id==='eurusd'||id==='gbpusd'||id==='usdchf')?4:2;
   const ps = (id==='us500')?10.12:(id==='nas')?40.65:1;
   const ema20signal = t.price>t.ema20?'ABOVE (bullish short-term)':'BELOW (bearish short-term)';
-  const mom5label = parseFloat(t.mom5)>0.5?'BULLISH':parseFloat(t.mom5)<-0.5?'BEARISH':'FLAT';
+  const mom5label = parseFloat(t.mom5)>0.3?'BULLISH':parseFloat(t.mom5)<-0.3?'BEARISH':'FLAT';
   return 'Price='+fmt(t.price*ps,dp)+
     ' vs EMA20='+fmt(t.ema20*ps,dp)+' '+ema20signal+
     ' EMA50='+fmt(t.ema50*ps,dp)+(t.price>t.ema50?' (ABOVE)':' (BELOW)')+
@@ -1389,9 +1458,9 @@ function buildAnalysisPrompt(){
   let prompt = 'You are a professional systematic market analyst. Your job is to produce a CONSISTENT, STRUCTURED directional bias for a day trader.';
   prompt += ' Today: '+today+'. Session: '+session+'.';
   prompt += ' Live prices: '+(priceCtx||'unavailable')+'.';
-  prompt += ' STEP 1: Search the web for current values: Fed funds rate, US 10Y yield, DXY level, VIX level, ECB rate, BoE rate, SNB rate, any major events today.';
+  prompt += ' STEP 1: Search the web for current values: Fed funds rate, US 10Y yield, DXY level, VIX level, ECB rate, BoE rate, SNB rate, any major events today. Note current session: '+session+'. London session favours EUR/GBP pairs and Gold. NY session favours indices and USD pairs. Overlap (13:00-17:00 UTC) is highest liquidity for all.';
   prompt += ' STEP 2: Score each macro factor -2 to +2 for risk assets. Sum scores: above +3=RISK-ON, below -3=RISK-OFF, between=MIXED.';
-  prompt += ' STEP 3: Use technical data below for Technical Bias. EMA rules: above EMA50+100+200=Bullish, below all=Bearish, mixed=Neutral. Also consider 5-day momentum direction and whether price is above/below EMA20 for short-term confirmation.';
+  prompt += ' STEP 3: Use 4H candle technical data below for Technical Bias. This trader uses 1H charts with EMA50/100/200 for execution - the 4H EMA stack provides the higher timeframe directional context. EMA rules: above EMA50+100+200=Bullish, below all=Bearish, mixed=Neutral. Price vs EMA20 shows short-term 4H momentum. The technical bias should reflect what a trader would see on their 4H chart.';
   prompt += ' STEP 4: Weight layers: Macro 40%, Technical 40%, Sentiment 20%.';
   prompt += ' GOLD TECHNICALS: '+techContext('gold');
   prompt += ' US500 TECHNICALS: '+techContext('us500');
@@ -1499,7 +1568,7 @@ function buildTechMetricsHTML(id){
 function buildVolProfileHTML(id){
   const priceScale = (id==='us500')?10.12:(id==='nas')?40.65:1;
   const vp = technicalsStore[id] && technicalsStore[id].volumeProfile;
-  if(!id || id==='gold') return '';
+  if(!id) return '';
   if(!vp){
     return '<div><div class="dd-section-label">Volume Profile</div>'
       +'<div style="background:var(--surface-1);border:1px solid var(--border);padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--muted);">'
@@ -1681,11 +1750,95 @@ async function runAnalysis(){
   btn.disabled=false; icon.className=''; icon.textContent='\u25B6';
 }
 
-// ── INIT ─────────────────────────────────────────────────────────
-fetchAllPrices();
-fetchNews();
-setInterval(fetchAllPrices,60000);
-setInterval(fetchNews,300000);
+// ── INIT handled by login auth check above ───────────────────────
 </script>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-mark">LB</div>
+      <div>
+        <div class="login-logo-text">LBFX</div>
+        <div class="login-logo-sub">MACRO EXECUTION DASHBOARD</div>
+      </div>
+    </div>
+    <div>
+      <div class="login-label">Access Password</div>
+      <input
+        class="login-input"
+        type="password"
+        id="login-input"
+        placeholder="Enter password"
+        autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')attemptLogin()"
+      />
+    </div>
+    <div class="login-error" id="login-error">Incorrect password — access denied</div>
+    <button class="login-btn" id="login-btn" onclick="attemptLogin()">
+      UNLOCK DASHBOARD
+    </button>
+    <div class="login-footer">PRIVATE · AUTHORISED ACCESS ONLY</div>
+  </div>
+</div>
+
+<script>
+// ── AUTH ─────────────────────────────────────────────────────────
+const PASSWORD_HASH = '7095040bf2beacdc5626c98dff66e4b02e1f2a0a1105c28e4910bc90e578f6bc';
+const SESSION_KEY   = 'lbfx_auth';
+
+async function hashPassword(password){
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function attemptLogin(){
+  const btn = document.getElementById('login-btn');
+  const input = document.getElementById('login-input');
+  const error = document.getElementById('login-error');
+  btn.disabled = true;
+  btn.textContent = 'VERIFYING...';
+  error.classList.remove('visible');
+  const hash = await hashPassword(input.value);
+  if(hash === PASSWORD_HASH){
+    sessionStorage.setItem(SESSION_KEY, '1');
+    document.getElementById('login-overlay').classList.add('hidden');
+    // Init dashboard after login
+    initDashboard();
+  } else {
+    error.classList.add('visible');
+    input.value = '';
+    input.focus();
+  }
+  btn.disabled = false;
+  btn.textContent = 'UNLOCK DASHBOARD';
+}
+
+function checkAuth(){
+  if(sessionStorage.getItem(SESSION_KEY) === '1'){
+    document.getElementById('login-overlay').classList.add('hidden');
+    return true;
+  }
+  // Focus input
+  setTimeout(()=>document.getElementById('login-input').focus(), 100);
+  return false;
+}
+
+function initDashboard(){
+  fetchAllPrices();
+  fetchNews();
+  setInterval(fetchAllPrices, 60000);
+  setInterval(fetchNews, 300000);
+}
+
+// Check auth on load
+if(checkAuth()){
+  initDashboard();
+}
+</script>
+
 </body>
 </html>
