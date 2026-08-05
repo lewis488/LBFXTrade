@@ -871,8 +871,8 @@ function fmt(n,dp){
 
 // ── ALPHA VANTAGE OHLCV ──────────────────────────────────────────
 const AV_CONFIGS = {
-  us500: { func:'TIME_SERIES_INTRADAY', symbol:'SPY', interval:'60min', seriesKey:'Time Series (60min)', isForex:false },
-  nas:   { func:'TIME_SERIES_INTRADAY', symbol:'QQQ', interval:'60min', seriesKey:'Time Series (60min)', isForex:false },
+  us500: { func:'TIME_SERIES_DAILY', symbol:'SPY', seriesKey:'Time Series (Daily)', isForex:false },
+  nas:   { func:'TIME_SERIES_DAILY', symbol:'QQQ', seriesKey:'Time Series (Daily)', isForex:false },
 };
 
 // Twelve Data OHLCV symbols - forex + Gold on 4H
@@ -967,9 +967,7 @@ async function fetchOHLCV(id){
   if(cfg.isForex){
     url='https://www.alphavantage.co/query?function='+cfg.func+'&from_symbol='+cfg.from+'&to_symbol='+cfg.to+'&outputsize=compact&apikey='+AV_KEY;
   } else {
-    // Intraday needs interval param
-    const intervalParam = cfg.interval ? '&interval='+cfg.interval : '';
-    url='https://www.alphavantage.co/query?function='+cfg.func+'&symbol='+cfg.symbol+intervalParam+'&outputsize=compact&apikey='+AV_KEY;
+    url='https://www.alphavantage.co/query?function='+cfg.func+'&symbol='+cfg.symbol+'&outputsize=compact&apikey='+AV_KEY;
   }
   const r=await fetch(url);
   const data=await r.json();
@@ -1751,93 +1749,6 @@ async function runAnalysis(){
 }
 
 // ── INIT handled by login auth check above ───────────────────────
-</script>
-
-<!-- LOGIN OVERLAY -->
-<div class="login-overlay" id="login-overlay">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="login-logo-mark">LB</div>
-      <div>
-        <div class="login-logo-text">LBFX</div>
-        <div class="login-logo-sub">MACRO EXECUTION DASHBOARD</div>
-      </div>
-    </div>
-    <div>
-      <div class="login-label">Access Password</div>
-      <input
-        class="login-input"
-        type="password"
-        id="login-input"
-        placeholder="Enter password"
-        autocomplete="current-password"
-        onkeydown="if(event.key==='Enter')attemptLogin()"
-      />
-    </div>
-    <div class="login-error" id="login-error">Incorrect password — access denied</div>
-    <button class="login-btn" id="login-btn" onclick="attemptLogin()">
-      UNLOCK DASHBOARD
-    </button>
-    <div class="login-footer">PRIVATE · AUTHORISED ACCESS ONLY</div>
-  </div>
-</div>
-
-<script>
-// ── AUTH ─────────────────────────────────────────────────────────
-const PASSWORD_HASH = '7095040bf2beacdc5626c98dff66e4b02e1f2a0a1105c28e4910bc90e578f6bc';
-const SESSION_KEY   = 'lbfx_auth';
-
-async function hashPassword(password){
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-
-async function attemptLogin(){
-  const btn = document.getElementById('login-btn');
-  const input = document.getElementById('login-input');
-  const error = document.getElementById('login-error');
-  btn.disabled = true;
-  btn.textContent = 'VERIFYING...';
-  error.classList.remove('visible');
-  const hash = await hashPassword(input.value);
-  if(hash === PASSWORD_HASH){
-    sessionStorage.setItem(SESSION_KEY, '1');
-    document.getElementById('login-overlay').classList.add('hidden');
-    // Init dashboard after login
-    initDashboard();
-  } else {
-    error.classList.add('visible');
-    input.value = '';
-    input.focus();
-  }
-  btn.disabled = false;
-  btn.textContent = 'UNLOCK DASHBOARD';
-}
-
-function checkAuth(){
-  if(sessionStorage.getItem(SESSION_KEY) === '1'){
-    document.getElementById('login-overlay').classList.add('hidden');
-    return true;
-  }
-  // Focus input
-  setTimeout(()=>document.getElementById('login-input').focus(), 100);
-  return false;
-}
-
-function initDashboard(){
-  fetchAllPrices();
-  fetchNews();
-  setInterval(fetchAllPrices, 60000);
-  setInterval(fetchNews, 300000);
-}
-
-// Check auth on load
-if(checkAuth()){
-  initDashboard();
-}
 </script>
 
 </body>
