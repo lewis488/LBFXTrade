@@ -412,6 +412,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
     <span class="ticker-change flat" id="tick-vix-chg">--</span>
   </div>
   <div class="ticker-item">
+    <span class="ticker-symbol">US30</span>
+    <span class="ticker-price" id="tick-us30">----</span>
+    <span class="ticker-change flat" id="tick-us30-chg">--</span>
+  </div>
+  <div class="ticker-item">
     <span class="ticker-symbol">EUR/USD</span>
     <span class="ticker-price" id="tick-eurusd">----</span>
     <span class="ticker-change flat" id="tick-eurusd-chg">--</span>
@@ -455,6 +460,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
     <div class="data-chip" id="chip-gold"><div class="chip-dot"></div> GOLD</div>
     <div class="data-chip" id="chip-us500"><div class="chip-dot"></div> US500</div>
     <div class="data-chip" id="chip-nas"><div class="chip-dot"></div> NAS100</div>
+    <div class="data-chip" id="chip-us30"><div class="chip-dot"></div> US30</div>
     <div class="data-chip" id="chip-eurusd"><div class="chip-dot"></div> EUR/USD</div>
     <div class="data-chip" id="chip-gbpusd"><div class="chip-dot"></div> GBP/USD</div>
     <div class="data-chip" id="chip-usdchf"><div class="chip-dot"></div> USD/CHF</div>
@@ -514,7 +520,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
         <div class="card-ai-text" id="ai-text-gold">Run analysis to generate insight...</div>
         <div class="card-layers">
           <div class="layer-row"><span class="layer-name">Macro / Fundamentals</span><span class="layer-val pending" id="layer-macro-gold">—</span></div>
-          <div class="layer-row"><span class="layer-name">Technical Bias</span><span class="layer-val pending" id="layer-tech-gold">—</span></div>
           <div class="layer-row"><span class="layer-name">News / Sentiment</span><span class="layer-val pending" id="layer-sent-gold">—</span></div>
         </div>
       </div>
@@ -549,7 +554,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
         <div class="card-ai-text" id="ai-text-us500">Run analysis to generate insight...</div>
         <div class="card-layers">
           <div class="layer-row"><span class="layer-name">Macro / Fundamentals</span><span class="layer-val pending" id="layer-macro-us500">—</span></div>
-          <div class="layer-row"><span class="layer-name">Technical Bias</span><span class="layer-val pending" id="layer-tech-us500">—</span></div>
           <div class="layer-row"><span class="layer-name">News / Sentiment</span><span class="layer-val pending" id="layer-sent-us500">—</span></div>
         </div>
       </div>
@@ -584,7 +588,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
         <div class="card-ai-text" id="ai-text-nas">Run analysis to generate insight...</div>
         <div class="card-layers">
           <div class="layer-row"><span class="layer-name">Macro / Fundamentals</span><span class="layer-val pending" id="layer-macro-nas">—</span></div>
-          <div class="layer-row"><span class="layer-name">Technical Bias</span><span class="layer-val pending" id="layer-tech-nas">—</span></div>
           <div class="layer-row"><span class="layer-name">News / Sentiment</span><span class="layer-val pending" id="layer-sent-nas">—</span></div>
         </div>
       </div>
@@ -594,6 +597,41 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
       </div>
     </div>
 
+
+
+    <!-- US30 -->
+    <div class="instrument-card" id="card-us30" onclick="openDeepDive('us30')">
+      <div class="card-top">
+        <div class="card-header-row">
+          <div>
+            <div class="card-symbol" style="color:#f59e0b">US30</div>
+            <div class="card-name">DOW JONES · BLUE CHIP</div>
+          </div>
+          <div class="bias-pill pending" id="bias-us30">PENDING</div>
+        </div>
+        <div class="card-price-row">
+          <span class="card-price" id="card-price-us30">----</span>
+          <span class="card-change flat" id="card-chg-us30">--</span>
+        </div>
+        <div class="conf-row-card">
+          <span class="conf-label-small">CONFIDENCE</span>
+          <div class="conf-track"><div class="conf-fill pending" id="cf-us30"></div></div>
+          <span class="conf-pct-small" id="cpct-us30" style="color:var(--muted)">--</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-ai-label">AI Analysis</div>
+        <div class="card-ai-text" id="ai-text-us30">Run analysis to generate insight...</div>
+        <div class="card-layers">
+          <div class="layer-row"><span class="layer-name">Macro / Fundamentals</span><span class="layer-val pending" id="layer-macro-us30">—</span></div>
+          <div class="layer-row"><span class="layer-name">News / Sentiment</span><span class="layer-val pending" id="layer-sent-us30">—</span></div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="card-btn" onclick="event.stopPropagation();openDeepDive('us30')">Quick Overview</button>
+        <button class="card-btn primary" onclick="event.stopPropagation();openDeepDive('us30')">Deep Dive ›</button>
+      </div>
+    </div>
 
     <!-- EUR/USD -->
     <div class="instrument-card" id="card-eurusd" onclick="openDeepDive('eurusd')">
@@ -620,7 +658,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
         <div class="card-ai-text" id="ai-text-eurusd">Run analysis to generate insight...</div>
         <div class="card-layers">
           <div class="layer-row"><span class="layer-name">Macro / Fundamentals</span><span class="layer-val pending" id="layer-macro-eurusd">—</span></div>
-          <div class="layer-row"><span class="layer-name">Technical Bias</span><span class="layer-val pending" id="layer-tech-eurusd">—</span></div>
           <div class="layer-row"><span class="layer-name">News / Sentiment</span><span class="layer-val pending" id="layer-sent-eurusd">—</span></div>
         </div>
       </div>
@@ -654,7 +691,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
         <div class="card-ai-text" id="ai-text-gbpusd">Run analysis to generate insight...</div>
         <div class="card-layers">
           <div class="layer-row"><span class="layer-name">Macro / Fundamentals</span><span class="layer-val pending" id="layer-macro-gbpusd">—</span></div>
-          <div class="layer-row"><span class="layer-name">Technical Bias</span><span class="layer-val pending" id="layer-tech-gbpusd">—</span></div>
           <div class="layer-row"><span class="layer-name">News / Sentiment</span><span class="layer-val pending" id="layer-sent-gbpusd">—</span></div>
         </div>
       </div>
@@ -688,7 +724,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
         <div class="card-ai-text" id="ai-text-usdchf">Run analysis to generate insight...</div>
         <div class="card-layers">
           <div class="layer-row"><span class="layer-name">Macro / Fundamentals</span><span class="layer-val pending" id="layer-macro-usdchf">—</span></div>
-          <div class="layer-row"><span class="layer-name">Technical Bias</span><span class="layer-val pending" id="layer-tech-usdchf">—</span></div>
           <div class="layer-row"><span class="layer-name">News / Sentiment</span><span class="layer-val pending" id="layer-sent-usdchf">—</span></div>
         </div>
       </div>
@@ -710,6 +745,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:0 2
       <div class="cf-item"><span class="cf-name">XAU/USD</span><div class="cf-bar-wrap"><div class="cf-bar-track"><div class="cf-bar-fill" id="cfb-gold" style="width:0%"></div></div></div><span class="cf-val flat" id="cfv-gold">--</span></div>
       <div class="cf-item"><span class="cf-name">US500</span><div class="cf-bar-wrap"><div class="cf-bar-track"><div class="cf-bar-fill" id="cfb-us500" style="width:0%"></div></div></div><span class="cf-val flat" id="cfv-us500">--</span></div>
       <div class="cf-item"><span class="cf-name">NAS100</span><div class="cf-bar-wrap"><div class="cf-bar-track"><div class="cf-bar-fill" id="cfb-nas" style="width:0%"></div></div></div><span class="cf-val flat" id="cfv-nas">--</span></div>
+      <div class="cf-item"><span class="cf-name">US30</span><div class="cf-bar-wrap"><div class="cf-bar-track"><div class="cf-bar-fill" id="cfb-us30" style="width:0%"></div></div></div><span class="cf-val flat" id="cfv-us30">--</span></div>
       <div class="cf-item"><span class="cf-name">EUR/USD</span><div class="cf-bar-wrap"><div class="cf-bar-track"><div class="cf-bar-fill" id="cfb-eurusd" style="width:0%"></div></div></div><span class="cf-val flat" id="cfv-eurusd">--</span></div>
       <div class="cf-item"><span class="cf-name">GBP/USD</span><div class="cf-bar-wrap"><div class="cf-bar-track"><div class="cf-bar-fill" id="cfb-gbpusd" style="width:0%"></div></div></div><span class="cf-val flat" id="cfv-gbpusd">--</span></div>
       <div class="cf-item"><span class="cf-name">USD/CHF</span><div class="cf-bar-wrap"><div class="cf-bar-track"><div class="cf-bar-fill" id="cfb-usdchf" style="width:0%"></div></div></div><span class="cf-val flat" id="cfv-usdchf">--</span></div>
@@ -759,6 +795,7 @@ const INSTRUMENTS = {
   gold:  { name:'Gold Spot vs US Dollar', display:'XAU/USD', color:'var(--gold-col)' },
   us500: { name:'S&P 500 Index',          display:'US500',   color:'var(--text)'     },
   nas:   { name:'Nasdaq 100 Index',       display:'NAS100',  color:'var(--text)'     },
+  us30:  { name:'Dow Jones Industrial',   display:'US30',    color:'#f59e0b'         },
   eurusd:{ name:'Euro vs US Dollar',      display:'EUR/USD', color:'var(--accent)'   },
   gbpusd:{ name:'British Pound vs Dollar',display:'GBP/USD', color:'#a78bfa'         },
   usdchf:{ name:'US Dollar vs Swiss Franc',display:'USD/CHF',color:'#34d399'         },
@@ -870,14 +907,15 @@ function fmt(n,dp){
 }
 
 // ── ALPHA VANTAGE OHLCV ──────────────────────────────────────────
-const AV_CONFIGS = {
-  us500: { func:'TIME_SERIES_DAILY', symbol:'SPY', seriesKey:'Time Series (Daily)', isForex:false },
-  nas:   { func:'TIME_SERIES_DAILY', symbol:'QQQ', seriesKey:'Time Series (Daily)', isForex:false },
-};
+// AV no longer used for OHLCV - all candles via Twelve Data
+const AV_CONFIGS = {};
 
-// Twelve Data OHLCV symbols - forex + Gold on 4H
+// Twelve Data OHLCV - all instruments on 4H
 const TD_OHLCV = {
   gold:   'XAU/USD',
+  us500:  'SPY',
+  nas:    'QQQ',
+  us30:   'DIA',
   eurusd: 'EUR/USD',
   gbpusd: 'GBP/USD',
   usdchf: 'USD/CHF',
@@ -1155,123 +1193,14 @@ function applyCandles(id, candles){
 }
 
 async function fetchAllTechnicals(){
-  // Fetch gold live price first (for ticker display)
   await fetchGoldPrice();
-  // Gold OHLCV comes from TD_OHLCV below alongside forex pairs
-  const ids=['us500','nas'];
-  // Also fetch forex OHLCV from Twelve Data (in background after AV fetches)
-  const fetchForex = async () => {
-    for(const [id, sym] of Object.entries(TD_OHLCV)){
-      setChip(id,'loading',id.toUpperCase()+': FETCHING OHLCV...');
-      try{
-        const candles = await fetchTDOHLCV(sym);
-        state.candles[id] = candles;
-        technicalsStore[id] = computeTechnicals(candles);
-        technicalsStore[id].volumeProfile = computeVolumeProfile(candles, 20);
-        // Update card price from candles if not already set
-        if(!state.prices[id]||!state.prices[id].price){
-          const t = technicalsStore[id];
-          const cp = document.getElementById('card-price-'+id);
-          if(cp) cp.textContent = fmtPrice(t.price, 4);
-        }
-        setChip(id,'loaded',id.toUpperCase()+': '+candles.length+' BARS');
-        console.log(id+' OHLCV loaded from TD: '+candles.length+' bars');
-      } catch(e){
-        console.warn('TD OHLCV failed for '+id+':',e.message);
-        setChip(id,'error',id.toUpperCase()+': OHLCV FAILED');
-      }
-      // Small delay between TD requests
-      await new Promise(res=>setTimeout(res,500));
-    }
-  };
-
-  // Try cache first
-  const cached = loadCache();
-  if(cached){
-    // Restore index candles from cache
-    ids.forEach(id=>{
-      if(cached[id]){
-        setChip(id,'loaded',id.toUpperCase()+': CACHED');
-        applyCandles(id, cached[id]);
-      }
-    });
-    // Restore forex candles from cache
-    const forexCached = Object.keys(TD_OHLCV).every(id=>!!cached[id]);
-    if(forexCached){
-      Object.keys(TD_OHLCV).forEach(id=>{
-        state.candles[id] = cached[id];
-        technicalsStore[id] = computeTechnicals(cached[id]);
-        technicalsStore[id].volumeProfile = computeVolumeProfile(cached[id], 20);
-        setChip(id,'loaded',id.toUpperCase()+': CACHED');
-      });
-      setChip('ai','loaded','OHLCV: FROM CACHE');
-      return;
-    }
-    // Forex not in cache yet - fetch it
-    setChip('ai','loading','FETCHING FOREX OHLCV...');
-  }
-
-  // No cache — fetch from Alpha Vantage
-  const freshData = {};
-  for(let i=0;i<ids.length;i++){
-    const id=ids[i];
-    setChip(id,'loading',id.toUpperCase()+': FETCHING OHLCV...');
-    try{
-      const candles=await fetchOHLCV(id);
-      freshData[id] = candles;
-      applyCandles(id, candles);
-      setChip(id,'loaded',id.toUpperCase()+': '+candles.length+' BARS');
-    if(id==='us500') setChip('gold','loaded','GOLD: PRICE LIVE');
-    } catch(e){
-      console.warn('OHLCV failed for '+id+':',e.message);
-      setChip(id,'error',id.toUpperCase()+': '+e.message.substring(0,20));
-    }
-    if(i<ids.length-1){
-      await new Promise(res=>setTimeout(res,15000));
-    }
-  }
-
-  // Fetch forex OHLCV from Twelve Data after AV completes
-  for(const [id, sym] of Object.entries(TD_OHLCV)){
-    setChip(id,'loading',id.toUpperCase()+': FETCHING OHLCV...');
-    try{
-      const candles = await fetchTDOHLCV(sym);
-      state.candles[id] = candles;
-      technicalsStore[id] = computeTechnicals(candles);
-      technicalsStore[id].volumeProfile = computeVolumeProfile(candles, 20);
-      // For gold - update price display from candles if live price not yet set
-      if(id==='gold' && (!state.prices['gold']||!state.prices['gold'].price)){
-        const t = technicalsStore['gold'];
-        const tp = document.getElementById('tick-gold');
-        const cp = document.getElementById('card-price-gold');
-        if(tp) tp.textContent = fmtPrice(t.price);
-        if(cp) cp.textContent = fmtPrice(t.price);
-      }
-      setChip(id,'loaded',id.toUpperCase()+': '+candles.length+' BARS');
-      console.log(id+' TD OHLCV: '+candles.length+' bars');
-    } catch(e){
-      console.warn('TD OHLCV failed for '+id+':',e.message);
-      setChip(id,'error',id.toUpperCase()+': OHLCV FAILED');
-    }
-    await new Promise(res=>setTimeout(res,500));
-  }
-
-  // Save to cache if we got data
-  if(Object.keys(freshData).length > 0){
-    // Also include forex technicals in cache if available
-    Object.keys(TD_OHLCV).forEach(id=>{
-      if(state.candles[id]) freshData[id] = state.candles[id];
-    });
-    saveCache(freshData);
-    console.log('OHLCV cached for 6 hours');
-  }
 }
 
 function techContext(id){
   const t=technicalsStore[id];
   if(!t) return 'No technical data available.';
   const dp = (id==='eurusd'||id==='gbpusd'||id==='usdchf')?4:2;
-  const ps = (id==='us500')?10.12:(id==='nas')?40.65:1;
+  const ps = (id==='us500')?10.12:(id==='nas')?40.65:(id==='us30')?186.5:1;
   const ema20signal = t.price>t.ema20?'ABOVE (bullish short-term)':'BELOW (bearish short-term)';
   const mom5label = parseFloat(t.mom5)>0.3?'BULLISH':parseFloat(t.mom5)<-0.3?'BEARISH':'FLAT';
   return 'Price='+fmt(t.price*ps,dp)+
@@ -1376,7 +1305,7 @@ function setTickerPrice(id,price,chg,pct){
   if(cc){cc.textContent=sign+fmtPrice(pct,2)+'%'; cc.className='card-change '+cls;}
 }
 function updateCapitalFlow(){
-  ['gold','us500','nas','dxy','vix','eurusd','gbpusd','usdchf'].forEach(id=>{
+  ['gold','us500','nas','us30','dxy','vix','eurusd','gbpusd','usdchf'].forEach(id=>{
     const p=state.prices[id]; if(!p) return;
     const pct=p.pct, sign=pct>=0?'+':'';
     const cls=pct>0?'pos':'neg';
@@ -1457,19 +1386,17 @@ function buildAnalysisPrompt(){
   prompt += ' Today: '+today+'. Session: '+session+'.';
   prompt += ' Live prices: '+(priceCtx||'unavailable')+'.';
   prompt += ' STEP 1: Search the web for current values: Fed funds rate, US 10Y yield, DXY level, VIX level, ECB rate, BoE rate, SNB rate, any major events today. Note current session: '+session+'. London session favours EUR/GBP pairs and Gold. NY session favours indices and USD pairs. Overlap (13:00-17:00 UTC) is highest liquidity for all.';
-  prompt += ' STEP 2: Score each macro factor -2 to +2 for risk assets. Sum scores: above +3=RISK-ON, below -3=RISK-OFF, between=MIXED.';
-  prompt += ' STEP 3: Use 4H candle technical data below for Technical Bias. This trader uses 1H charts with EMA50/100/200 for execution - the 4H EMA stack provides the higher timeframe directional context. EMA rules: above EMA50+100+200=Bullish, below all=Bearish, mixed=Neutral. Price vs EMA20 shows short-term 4H momentum. The technical bias should reflect what a trader would see on their 4H chart.';
-  prompt += ' STEP 4: Weight layers: Macro 40%, Technical 40%, Sentiment 20%.';
-  prompt += ' GOLD TECHNICALS: '+techContext('gold');
-  prompt += ' US500 TECHNICALS: '+techContext('us500');
-  prompt += ' NAS100 TECHNICALS: '+techContext('nas');
-  prompt += ' EUR/USD TECHNICALS: '+techContext('eurusd');
-  prompt += ' GBP/USD TECHNICALS: '+techContext('gbpusd');
-  prompt += ' USD/CHF TECHNICALS: '+techContext('usdchf');
-  prompt += ' Analyse six instruments: 1.XAU/USD Gold 2.US500 S&P500 3.NAS100 Nasdaq 4.EUR/USD 5.GBP/USD 6.USD/CHF';
+  prompt += ' STEP 2: Score each macro factor -2 to +2 for risk assets. Sum scores: above +3=RISK-ON, below -3=RISK-OFF, between=MIXED. Also score news sentiment for each instrument -2 to +2.';
+  prompt += ' STEP 3: The trader handles their own technical analysis on charts. Do NOT assess technical bias. Focus purely on macro fundamentals and news/sentiment drivers.';
+  prompt += ' STEP 4: Weight layers: Macro 60%, Sentiment 40%. No technical layer.';
+ 
+ 
+ 
+ 
+  prompt += ' Analyse seven instruments: 1.XAU/USD Gold 2.US500 S&P500 3.NAS100 Nasdaq 4.US30 Dow Jones 5.EUR/USD 6.GBP/USD 7.USD/CHF';
   prompt += ' Be CONSISTENT. Regime must follow factor score sum strictly.';
   prompt += ' Return ONLY valid JSON, no markdown. Structure: {"regime":"RISK-ON|RISK-OFF|MIXED","confidence_index":0-100,"macro_score":-5_to_5,"narrative":"3 sentences","themes":["x5"],"instruments":{"gold":{...},"us500":{...},"nas":{...},"eurusd":{...},"gbpusd":{...},"usdchf":{...}}}';
-  prompt += ' Each instrument object must have: bias(Bullish|Bearish|Neutral), confidence(0-100), macro(Bullish|Bearish|Neutral), technical(Bullish|Bearish|Neutral), sentiment(Bullish|Bearish|Neutral), ai_summary(2 sentences), edge_score(0-100), edge_bias(string), edge_explanation(2 sentences), mood(RISK-ON|RISK-OFF|NEUTRAL), mood_summary(1 sentence), policy(HAWKISH|NEUTRAL|DOVISH), policy_summary(2 sentences), resistance(string), support(string), target(string), flow(HEALTHY|THIN|CROWDED), bearing(BULLISH|NEUTRAL|BEARISH), pulse(TRADABLE|QUIET|ELEVATED|WILD)';
+  prompt += ' Each instrument object must have: bias(Bullish|Bearish|Neutral), confidence(0-100), macro(Bullish|Bearish|Neutral), sentiment(Bullish|Bearish|Neutral), ai_summary(2 sentences), edge_score(0-100), edge_bias(string), edge_explanation(2 sentences), mood(RISK-ON|RISK-OFF|NEUTRAL), mood_summary(1 sentence), policy(HAWKISH|NEUTRAL|DOVISH), policy_summary(2 sentences), resistance(string), support(string), target(string), flow(HEALTHY|THIN|CROWDED), bearing(BULLISH|NEUTRAL|BEARISH), pulse(TRADABLE|QUIET|ELEVATED|WILD)';
   return prompt;
 }
 
@@ -1494,8 +1421,8 @@ function renderCard(id,d){
   if(cp){cp.textContent=(d.confidence||50)+'%'; cp.style.color=cls==='bull'?'var(--bull)':cls==='bear'?'var(--bear)':'var(--warn)';}
   const at=document.getElementById('ai-text-'+id);
   if(at) at.textContent=(d.ai_summary||'').replace(/<cite[^>]*>|<\/cite>/g,'').replace(/\s+/g,' ').trim();
-  ['macro','tech','sent'].forEach(layer=>{
-    const key=layer==='sent'?'sentiment':layer==='tech'?'technical':'macro';
+  ['macro','sent'].forEach(layer=>{
+    const key=layer==='sent'?'sentiment':'macro';
     const el=document.getElementById('layer-'+layer+'-'+id);
     if(el){el.textContent=(d[key]||'').toUpperCase(); el.className='layer-val '+layerClass(d[key]);}
   });
@@ -1529,7 +1456,7 @@ function buildTechMetricsHTML(id){
       +'No candle data available for this instrument. Run Analysis to load OHLCV data.'
       +'</div></div>';
   }
-  const priceScale = (id==='us500')?10.12:(id==='nas')?40.65:1;
+  const priceScale = (id==='us500')?10.12:(id==='nas')?40.65:(id==='us30')?186.5:1;
   const dp = (id==='eurusd'||id==='gbpusd'||id==='usdchf')?4:2;
   const scaledPrice = t.price * priceScale;
   const scaledEMA20 = t.ema20 * priceScale;
@@ -1564,7 +1491,7 @@ function buildTechMetricsHTML(id){
 }
 
 function buildVolProfileHTML(id){
-  const priceScale = (id==='us500')?10.12:(id==='nas')?40.65:1;
+  const priceScale = (id==='us500')?10.12:(id==='nas')?40.65:(id==='us30')?186.5:1;
   const vp = technicalsStore[id] && technicalsStore[id].volumeProfile;
   if(!id) return '';
   if(!vp){
@@ -1676,13 +1603,12 @@ function openDeepDive(id){
     +'</div>'
     +'<div><div class="dd-section-label">Layer Breakdown</div><div class="dd-tech-grid">'
       +'<div class="dd-tech-box"><div class="dd-tech-label">Macro</div><div class="dd-tech-value '+layerClass(d.macro)+'">'+(d.macro||'').toUpperCase()+'</div></div>'
-      +'<div class="dd-tech-box"><div class="dd-tech-label">Technical</div><div class="dd-tech-value '+layerClass(d.technical)+'">'+(d.technical||'').toUpperCase()+'</div></div>'
+
       +'<div class="dd-tech-box"><div class="dd-tech-label">Sentiment</div><div class="dd-tech-value '+layerClass(d.sentiment)+'">'+(d.sentiment||'').toUpperCase()+'</div></div>'
       +'<div class="dd-tech-box"><div class="dd-tech-label">Flow</div><div class="dd-tech-value plain">'+(d.flow||'').toUpperCase()+'</div></div>'
       +'<div class="dd-tech-box"><div class="dd-tech-label">Bearing</div><div class="dd-tech-value '+layerClass(d.bearing)+'">'+(d.bearing||'').toUpperCase()+'</div></div>'
       +'<div class="dd-tech-box"><div class="dd-tech-label">Pulse</div><div class="dd-tech-value plain">'+(d.pulse||'').toUpperCase()+'</div></div>'
     +'</div></div>'
-    +buildTechMetricsHTML(id)
     +'<div><div class="dd-section-label">Key Levels</div><div class="dd-levels">'
       +'<div class="dd-level-box"><span class="dd-level-label">Resistance</span><span class="dd-level-val res">'+(d.resistance||'')+'</span></div>'
       +'<div class="dd-level-box"><span class="dd-level-label">Support</span><span class="dd-level-val sup">'+(d.support||'')+'</span></div>'
@@ -1711,7 +1637,7 @@ async function runAnalysis(){
   document.getElementById('macro-themes').innerHTML='';
   setChip('ai','loading','AI: RUNNING');
 
-  ['gold','us500','nas','eurusd','gbpusd','usdchf'].forEach(id=>{
+  ['gold','us500','nas','us30','eurusd','gbpusd','usdchf'].forEach(id=>{
     const bp=document.getElementById('bias-'+id);
     if(bp){bp.textContent='ANALYSING'; bp.className='bias-pill pending';}
     const at=document.getElementById('ai-text-'+id);
@@ -1733,7 +1659,7 @@ async function runAnalysis(){
     if(!result) throw new Error('Could not parse AI response');
     renderMacro(result);
     const instrs=result.instruments||{};
-    ['gold','us500','nas','eurusd','gbpusd','usdchf'].forEach(id=>{
+    ['gold','us500','nas','us30','eurusd','gbpusd','usdchf'].forEach(id=>{
       const d=instrs[id];
       if(d){ state.analysis[id]=d; renderCard(id,d); setChip(id,'loaded',id.toUpperCase()+': DONE'); }
     });
