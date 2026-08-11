@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-08-10T18:41:38.220894",
+  "updated_utc": "2026-08-11T00:56:38.087121",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
@@ -9,7 +9,7 @@
     "bias": "Bullish",
     "confidence": "Medium",
     "drivers": [
-      "Real yields rising",
+      "Real yields easing",
       "Volatility falling"
     ]
   },
@@ -17,7 +17,7 @@
     "bias": "Bullish",
     "confidence": "Medium",
     "drivers": [
-      "Real yields rising",
+      "Real yields falling",
       "USD weakening"
     ]
   }
