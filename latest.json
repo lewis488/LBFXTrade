@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-01T15:44:51.970437",
+  "updated_utc": "2026-09-01T20:17:29.079605",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
@@ -14,7 +14,7 @@
     ]
   },
   "gold": {
-    "bias": "Neutral",
+    "bias": "Bearish",
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
