@@ -1,10 +1,10 @@
 {
-  "updated_utc": "2026-09-08T15:38:38.307008",
+  "updated_utc": "2026-09-08T20:28:11.268536",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
   },
-  "risk_regime": "Risk-Off",
+  "risk_regime": "Mixed",
   "us500": {
     "bias": "Neutral",
     "confidence": "Medium",
@@ -14,11 +14,11 @@
     ]
   },
   "gold": {
-    "bias": "Bearish",
+    "bias": "Neutral",
     "confidence": "Medium",
     "drivers": [
       "Real yields rising",
-      "USD strengthening"
+      "USD weakening"
     ]
   }
 }
