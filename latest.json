@@ -1,13 +1,13 @@
 {
-  "updated_utc": "2026-09-11T10:12:08.924771",
+  "updated_utc": "2026-09-11T15:30:42.982415",
   "macro_risk": {
     "risk": false,
     "message": "Macro calendar unavailable"
   },
-  "risk_regime": "Mixed",
+  "risk_regime": "Risk-Off",
   "us500": {
     "bias": "Bearish",
-    "confidence": "Medium",
+    "confidence": "High",
     "drivers": [
       "Real yields rising",
       "Volatility elevated"
